@@ -1,11 +1,12 @@
 package com.github.john.todo_api.controller;
 
-import com.github.john.todo_api.model.Users;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.github.john.todo_api.entity.Users;
 import com.github.john.todo_api.service.UserService;
 
 @RestController
@@ -49,4 +50,6 @@ public class UserController {
         service.delete(id);
         return  ResponseEntity.ok().body("Usuário com o id " + id + " foi exclúido com sucesso.");
     }
+
+
 }

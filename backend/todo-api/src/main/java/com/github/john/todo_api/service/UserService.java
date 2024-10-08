@@ -1,8 +1,9 @@
 package com.github.john.todo_api.service;
 
+import com.github.john.todo_api.entity.Users;
 import com.github.john.todo_api.exception.CustomGenericException;
 import com.github.john.todo_api.exception.NotFoundException;
-import com.github.john.todo_api.model.Users;
+
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

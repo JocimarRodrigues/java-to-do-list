@@ -1,7 +1,8 @@
 package com.github.john.todo_api.repository;
 
-import com.github.john.todo_api.model.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.github.john.todo_api.entity.Users;
 
 import java.util.Optional;
 

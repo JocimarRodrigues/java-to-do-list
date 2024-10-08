@@ -1,4 +1,4 @@
-package com.github.john.todo_api.model;
+package com.github.john.todo_api.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.github.john.todo_api.model;
+package com.github.john.todo_api.entity;
 
 import com.github.john.todo_api.enums.StatusTask;
 import jakarta.persistence.*;

@@ -1,9 +1,11 @@
 package com.github.john.todo_api.service;
 
+import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.entity.Tasks;
+import com.github.john.todo_api.entity.Users;
 import com.github.john.todo_api.exception.CustomGenericException;
 import com.github.john.todo_api.exception.NotFoundException;
-import com.github.john.todo_api.model.Tasks;
-import com.github.john.todo_api.model.Users;
+import com.github.john.todo_api.mapper.TaskMapper;
 import com.github.john.todo_api.repository.TaskRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,11 @@ public class TaskService {
     private TaskRepository repository;
 
 
-    public Tasks findById(Integer id) {
-        Optional<Tasks> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new NotFoundException("Tarefa não encontrada."));
+    public TaskDTO findById(Integer id) {
+        Tasks obj = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Tarefa não encontrada."));
+
+        return TaskMapper.toDTO(obj);
     }
 
     public Tasks insert(Tasks obj) {

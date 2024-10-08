@@ -1,7 +1,9 @@
 package com.github.john.todo_api.controller;
 
-import com.github.john.todo_api.model.Tasks;
-import com.github.john.todo_api.model.Users;
+import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.entity.Tasks;
+import com.github.john.todo_api.entity.Users;
+import com.github.john.todo_api.mapper.TaskMapper;
 import com.github.john.todo_api.service.TaskService;
 import com.github.john.todo_api.service.UserService;
 import jakarta.validation.Valid;
@@ -19,8 +21,8 @@ public class TaskController {
 
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Tasks> findById(@PathVariable Integer id) {
-        Tasks obj = service.findById(id);
+    public ResponseEntity<TaskDTO> findById(@PathVariable Integer id) {
+        TaskDTO obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
 
