@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -23,8 +26,8 @@ public class Users {
     @NotEmpty(message = "Campo senha é obrigatório.")
     private String password;
 
-    @OneToMany( mappedBy = "user" , fetch = FetchType.LAZY )
-    private Set<Tasks> tasks;
+    @OneToMany( mappedBy = "user" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Tasks> tasks = new HashSet<>();
 
     public Users() {
 

@@ -1,5 +1,8 @@
 package com.github.john.todo_api.controller;
 
+import com.github.john.todo_api.dto.UserDTO;
+import com.github.john.todo_api.dto.UserDetailDTO;
+import com.github.john.todo_api.mapper.UserMapper;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,17 +12,27 @@ import org.springframework.web.bind.annotation.*;
 import com.github.john.todo_api.entity.Users;
 import com.github.john.todo_api.service.UserService;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping(value = "/users")
 public class UserController {
     @Autowired
     private UserService service;
 
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity<List<UserDTO>> findAll() {
+        List<Users> list = service.findAll();
+        List<UserDTO> listDTO = list.stream().map(UserDTO::new).collect(Collectors.toList());
+        return ResponseEntity.ok().body(listDTO);
+    }
+
     @GetMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Users> findById(@PathVariable Long id) {
-        Users obj = service.findById(id);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserDetailDTO> findById(@PathVariable Long id) {
+        UserDetailDTO userDto = service.findById(id);
+        return ResponseEntity.ok().body(userDto);
     }
 
 
@@ -32,16 +45,19 @@ public class UserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Users> insert(@RequestBody @Valid Users obj) {
-        obj = service.insert(obj);
-        return ResponseEntity.ok().body(obj);
+    public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserDTO obj) {
+        Users user = service.insert(obj);
+//        obj = service.insert(obj);
+//        UserDTO userDto = new UserDTO(obj);
+        return ResponseEntity.ok().body(UserMapper.toDTO(user));
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<Users> update(@PathVariable Long id, @RequestBody Users obj ) {
+    public  ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody Users obj ) {
         obj = service.update(id, obj);
-        return ResponseEntity.ok().body(obj);
+        UserDTO userDto = new UserDTO(obj);
+        return ResponseEntity.ok().body(userDto);
     }
 
     @DeleteMapping(value = "/{id}")

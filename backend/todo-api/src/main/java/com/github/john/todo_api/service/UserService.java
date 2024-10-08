@@ -1,14 +1,18 @@
 package com.github.john.todo_api.service;
 
+import com.github.john.todo_api.dto.UserDTO;
+import com.github.john.todo_api.dto.UserDetailDTO;
 import com.github.john.todo_api.entity.Users;
 import com.github.john.todo_api.exception.CustomGenericException;
 import com.github.john.todo_api.exception.NotFoundException;
 
+import com.github.john.todo_api.mapper.UserMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.github.john.todo_api.repository.UserRepository;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -17,10 +21,15 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
+    public List<Users> findAll() {
+        return repository.findAll();
+    }
 
-    public Users findById(Long id) {
+    public UserDetailDTO findById(Long id) {
         Optional<Users> obj = repository.findById(id);
-        return obj.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+        Users user = obj.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+        return UserMapper.toUserDetailDTO(user);  // Converte a entidade Users para UsersDTO
+//        return obj.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
     }
 
     public Users login(Users obj) {
@@ -36,9 +45,10 @@ public class UserService {
 
     }
 
-    public Users insert(Users obj) {
+    public Users insert(UserDTO userDto) {
         try {
-            return repository.save(obj);
+            Users user = UserMapper.toEntity(userDto, new Users());
+            return repository.save(user);
         } catch (RuntimeException e) {
             throw new CustomGenericException(e.getMessage());
         }
