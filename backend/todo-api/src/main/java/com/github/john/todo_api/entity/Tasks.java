@@ -17,7 +17,7 @@ public class Tasks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @ManyToOne
-    @JoinColumn(name = "tb_user_id")
+    @JoinColumn(name = "user_id")
     private Users user;
     @NotEmpty(message = "Campo nome é obrigatório.")
     private String name;

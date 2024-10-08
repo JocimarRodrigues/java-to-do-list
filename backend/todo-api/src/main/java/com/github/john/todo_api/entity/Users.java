@@ -23,7 +23,7 @@ public class Users {
     @NotEmpty(message = "Campo senha é obrigatório.")
     private String password;
 
-    @OneToMany( mappedBy = "tb_users" , fetch = FetchType.LAZY )
+    @OneToMany( mappedBy = "user" , fetch = FetchType.LAZY )
     private Set<Tasks> tasks;
 
     public Users() {
