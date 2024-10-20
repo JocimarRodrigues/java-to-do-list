@@ -7,7 +7,6 @@ import com.github.john.todo_api.entity.Users;
 public class TaskMapper {
     public static Tasks toEntity(TaskDTO dto, Users user) {
         Tasks entity = new Tasks();
-//        entity.setId(dto.getId());
         entity.setName(dto.getName());
         entity.setStatus(dto.getStatus());
         entity.setUser(user);

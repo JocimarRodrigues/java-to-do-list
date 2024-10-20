@@ -32,9 +32,10 @@ public class Users {
     public Users() {
 
     }
-    public Users(String name, String email, String password) {
+    public Users(Long id, String name, String email) {
+        this.id = id;
         this.name = name;
         this.email = email;
-        this.password = password;
+
     }
 }

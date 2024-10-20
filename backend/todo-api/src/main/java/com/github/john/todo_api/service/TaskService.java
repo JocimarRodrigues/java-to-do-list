@@ -7,6 +7,7 @@ import com.github.john.todo_api.exception.CustomGenericException;
 import com.github.john.todo_api.exception.NotFoundException;
 import com.github.john.todo_api.mapper.TaskMapper;
 import com.github.john.todo_api.repository.TaskRepository;
+import com.github.john.todo_api.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class TaskService {
     @Autowired
     private TaskRepository repository;
+    private UserRepository userRepository;
 
 
     public TaskDTO findById(Integer id) {
@@ -27,10 +29,16 @@ public class TaskService {
         return TaskMapper.toDTO(obj);
     }
 
-    public Tasks insert(Tasks obj) {
+    public TaskDTO insert(TaskDTO obj) {
         try {
-            return repository.save(obj);
-        } catch (RuntimeException e) {
+            Users user = userRepository.getReferenceById(obj.getUsuarioId());
+            Tasks entity = TaskMapper.toEntity(obj, user);
+            repository.save(entity);
+            return TaskMapper.toDTO(entity);
+        } catch (EntityNotFoundException e) {
+            throw new NotFoundException("Tarefa não encontrada.");
+        }
+        catch (RuntimeException e) {
             throw new CustomGenericException(e.getMessage());
         }
     }

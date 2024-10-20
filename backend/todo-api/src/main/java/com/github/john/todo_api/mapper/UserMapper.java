@@ -19,9 +19,9 @@ public class UserMapper {
 
     public static UserDTO toDTO(Users entity) {
         UserDTO dto = new UserDTO();
+        dto.setId(entity.getId());
         dto.setName(entity.getName());
         dto.setEmail(entity.getEmail());
-        dto.setPassword(entity.getPassword());
         return dto;
     }
 

@@ -40,6 +40,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<UserDTO> login(@RequestBody UserDTO obj) {
         UserDTO user = service.login(obj);
+        System.out.println(obj);
         return ResponseEntity.ok().body(user);
     }
 

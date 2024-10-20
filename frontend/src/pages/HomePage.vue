@@ -118,13 +118,7 @@ const router = useRouter();
 const login = async () => {
   try {
     const { data } = await UserService.Login(user.value);
-    // user.value = data;
-    userStore.storageUserSave({
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    userStore.storageUserSave(data);
     if (data) router.push('/tasks');
     console.log('🚀 ~ login ~ userFound:', data);
   } catch (error: AxiosError | unknown) {

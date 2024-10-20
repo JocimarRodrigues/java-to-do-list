@@ -28,7 +28,7 @@ public class TaskController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Tasks> insert(@RequestBody @Valid Tasks obj) {
+    public ResponseEntity<TaskDTO> insert(@RequestBody @Valid TaskDTO obj) {
         obj = service.insert(obj);
         return ResponseEntity.ok().body(obj);
     }

@@ -18,7 +18,6 @@ public class UserDTO {
         id = obj.getId();
         name = obj.getName();
         email = obj.getEmail();
-        password = obj.getPassword();
     }
 
 }
