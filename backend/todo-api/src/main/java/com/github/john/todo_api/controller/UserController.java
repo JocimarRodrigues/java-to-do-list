@@ -38,26 +38,25 @@ public class UserController {
 
     @PostMapping(value = "/login")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<Users> login(@RequestBody Users obj) {
-        Users user = service.login(obj);
+    public ResponseEntity<UserDTO> login(@RequestBody UserDTO obj) {
+        UserDTO user = service.login(obj);
         return ResponseEntity.ok().body(user);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserDTO obj) {
-        Users user = service.insert(obj);
+        UserDTO user = service.insert(obj);
 //        obj = service.insert(obj);
 //        UserDTO userDto = new UserDTO(obj);
-        return ResponseEntity.ok().body(UserMapper.toDTO(user));
+        return ResponseEntity.ok().body(user);
     }
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody Users obj ) {
-        obj = service.update(id, obj);
-        UserDTO userDto = new UserDTO(obj);
-        return ResponseEntity.ok().body(userDto);
+    public  ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO obj ) {
+        UserDTO response = service.update(id, obj);
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping(value = "/{id}")

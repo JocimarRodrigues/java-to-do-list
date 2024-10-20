@@ -9,7 +9,7 @@ import com.github.john.todo_api.entity.Users;
 import java.util.stream.Collectors;
 
 public class UserMapper {
-    public static Users toEntity(UserDTO dto, Users user) {
+    public static Users toEntity(UserDTO dto) {
         Users entity = new Users();
         entity.setName(dto.getName());
         entity.setEmail(dto.getEmail());

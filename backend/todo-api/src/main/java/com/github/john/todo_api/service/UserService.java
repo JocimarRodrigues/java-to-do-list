@@ -28,37 +28,36 @@ public class UserService {
     public UserDetailDTO findById(Long id) {
         Optional<Users> obj = repository.findById(id);
         Users user = obj.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
-        return UserMapper.toUserDetailDTO(user);  // Converte a entidade Users para UsersDTO
-//        return obj.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+        return UserMapper.toUserDetailDTO(user);
     }
 
-    public Users login(Users obj) {
+    public UserDTO login(UserDTO obj) {
         Optional<Users> user = repository.findByEmailOrName(obj.getEmail(), obj.getName());
-
         Users foundUser = user.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
 
-        // PLMDS NÃO VAI FAZER ISSO EM PROD PRA COMPARAR SNEHA, USA BYCRPT KKKKKKKK
         if (!Objects.equals(obj.getPassword(), foundUser.getPassword())) {
             throw new CustomGenericException("Senha incorreta.");
         }
-        return foundUser;
+        return UserMapper.toDTO(foundUser);
 
     }
 
-    public Users insert(UserDTO userDto) {
+    public UserDTO insert(UserDTO obj) {
         try {
-            Users user = UserMapper.toEntity(userDto, new Users());
-            return repository.save(user);
+            Users user = UserMapper.toEntity(obj);
+            repository.save(user);
+            return UserMapper.toDTO(user);
         } catch (RuntimeException e) {
             throw new CustomGenericException(e.getMessage());
         }
     }
 
-    public Users update(Long id, Users obj) {
+    public UserDTO update(Long id, UserDTO obj) {
         try {
             Users entity = repository.getReferenceById(id);
             updateData(entity, obj);
-            return repository.save(entity);
+            Users user = repository.save(entity);
+            return UserMapper.toDTO(user);
         } catch (EntityNotFoundException e) {
             throw new NotFoundException("Usuário não encontrado.");
         }
@@ -70,9 +69,11 @@ public class UserService {
         repository.delete(user);
     }
 
-    public void updateData(Users entity, Users obj) {
+    public void updateData(Users entity, UserDTO obj) {
         entity.setName(obj.getName());
         entity.setPassword(obj.getPassword());
+        entity.setEmail(obj.getEmail());
+
     }
 
 }
