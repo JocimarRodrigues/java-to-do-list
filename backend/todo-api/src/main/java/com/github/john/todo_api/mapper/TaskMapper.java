@@ -9,6 +9,7 @@ public class TaskMapper {
         Tasks entity = new Tasks();
         entity.setName(dto.getName());
         entity.setStatus(dto.getStatus());
+        entity.setDescription(dto.getDescription());
         entity.setUser(user);
         return entity;
     }
@@ -16,9 +17,10 @@ public class TaskMapper {
     public static TaskDTO toDTO(Tasks entity) {
         TaskDTO dto = new TaskDTO();
 //        dto.setId(entity.getId());
-        dto.setUsuarioId(entity.getUser().getId());
+        dto.setUserId(entity.getUser().getId());
         dto.setName(entity.getName());
         dto.setStatus(entity.getStatus());
+        dto.setDescription(entity.getDescription());
         return dto;
     }
 }

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { USER_STORAGE } from 'src/stores/storageConfig';
 
 export type UserType = {
+  id: number;
   name: string;
   email: string;
   password: string;

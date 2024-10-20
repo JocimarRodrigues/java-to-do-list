@@ -18,7 +18,7 @@ public class Tasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @EqualsAndHashCode.Include  // Igualdade baseada apenas no id
-    private Integer id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;

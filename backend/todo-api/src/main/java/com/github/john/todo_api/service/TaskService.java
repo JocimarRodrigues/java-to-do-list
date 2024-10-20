@@ -12,13 +12,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
 public class TaskService {
     @Autowired
     private TaskRepository repository;
+    @Autowired
     private UserRepository userRepository;
 
 
@@ -31,7 +31,8 @@ public class TaskService {
 
     public TaskDTO insert(TaskDTO obj) {
         try {
-            Users user = userRepository.getReferenceById(obj.getUsuarioId());
+            System.out.println(obj.getUserId());
+            Users user = userRepository.getReferenceById(obj.getUserId());
             Tasks entity = TaskMapper.toEntity(obj, user);
             repository.save(entity);
             return TaskMapper.toDTO(entity);
