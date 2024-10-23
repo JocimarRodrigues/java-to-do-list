@@ -1,4 +1,5 @@
 package com.github.john.todo_api.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class Users {
     private String password;
 
     @OneToMany( mappedBy = "user" , fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Tasks> tasks = new HashSet<>();
 
     public Users() {
