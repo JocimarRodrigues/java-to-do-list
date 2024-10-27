@@ -58,7 +58,70 @@
                   row-key="name"
                   dark
                   color="amber"
-                />
+                >
+                  <template v-slot:body="props">
+                    <q-tr :props="props">
+                      <q-td key="name" :props="props">
+                        <span>
+                          {{ props.row.name }}
+                        </span>
+                        <q-tooltip>
+                          {{ props.row.name }}
+                        </q-tooltip>
+                      </q-td>
+                      <q-td
+                        key="description"
+                        class="max-w-[200px] truncate"
+                        :props="props"
+                      >
+                        <span>
+                          {{ props.row.description }}
+                        </span>
+                        <q-tooltip>
+                          {{ props.row.description }}
+                        </q-tooltip>
+                      </q-td>
+                      <q-td
+                        key="status"
+                        class="max-w-[200px] truncate"
+                        :props="props"
+                      >
+                        <span>
+                          {{ props.row.status }}
+                        </span>
+                        <q-tooltip>
+                          {{ props.row.status }}
+                        </q-tooltip>
+                      </q-td>
+                      <q-td
+                        key="created_at"
+                        class="max-w-[200px] truncate"
+                        :props="props"
+                      >
+                        <span>
+                          {{ props.row.created_at }}
+                        </span>
+                        <q-tooltip>
+                          {{ props.row.created_at }}
+                        </q-tooltip>
+                      </q-td>
+                      <q-td
+                        key="dt_finalizacao"
+                        class="max-w-[200px] truncate"
+                        :props="props"
+                      >
+                        teste
+                      </q-td>
+                      <q-td
+                        key="dt_finalizacao"
+                        class="max-w-[200px] truncate"
+                        :props="props"
+                      >
+                        acao
+                      </q-td>
+                    </q-tr>
+                  </template>
+                </q-table>
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -84,13 +147,10 @@ type Column = {
 
 type Row = {
   name: string;
-  calories: number;
-  fat: number;
-  carbs: number;
-  protein: number;
-  sodium: number;
-  calcium: number;
-  iron: number;
+  description: string;
+  status: number;
+  created_at: string;
+  updated_at?: string;
 };
 
 type Tab = {
@@ -136,23 +196,32 @@ const columns: Column[] = [
   {
     name: 'name',
     required: true,
-    label: 'Descrição',
+    label: 'Nome',
     align: 'left',
     field: (row: Row) => row.name,
+    sortable: true,
+  },
+  {
+    name: 'description',
+    required: true,
+    label: 'Descrição',
+    align: 'left',
+    field: (row: Row) => row.description,
     sortable: true,
   },
   {
     name: 'status',
     align: 'left',
     label: 'Status',
-    field: 'calories',
+    field: (row: Row) => row.status,
+
     sortable: true,
   },
   {
-    name: 'dt_criacao',
+    name: 'created_at',
     label: 'Data de Criação',
     align: 'left',
-    field: 'carbs',
+    field: (row: Row) => row.created_at,
   },
   {
     name: 'dt_finalizacao',
