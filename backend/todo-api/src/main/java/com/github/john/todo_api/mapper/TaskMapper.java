@@ -10,6 +10,7 @@ public class TaskMapper {
         entity.setName(dto.getName());
         entity.setStatus(dto.getStatus());
         entity.setDescription(dto.getDescription());
+        entity.setCreatedAt(dto.getCreatedAt());
         entity.setUser(user);
         return entity;
     }
@@ -21,6 +22,7 @@ public class TaskMapper {
         dto.setName(entity.getName());
         dto.setStatus(entity.getStatus());
         dto.setDescription(entity.getDescription());
+        dto.setCreatedAt(entity.getCreatedAt());
         return dto;
     }
 }
