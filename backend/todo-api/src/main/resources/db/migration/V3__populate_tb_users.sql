@@ -6,4 +6,3 @@ INSERT INTO tb_users (name, password, email) VALUES
 ('Ana', 'password123', 'ana@example.com'),  -- Responsável pelas tarefas de design e branding
 ('Carlos', 'qwerty456', 'carlos@example.com');  -- Suporte técnico e treinamento
 
-COMMIT;

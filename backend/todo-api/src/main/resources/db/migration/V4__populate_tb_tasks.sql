@@ -29,5 +29,3 @@ INSERT INTO tb_tasks (name, status, user_id, description, created_at) VALUES
 ('Criar estratégia de mídia paga', 0, 4, 'Elaborar estratégia de anúncios pagos para aumentar a visibilidade da marca', NOW()),
 ('Atualizar portfólio de design', 1, 4, 'Revisar e atualizar o portfólio de design com os projetos mais recentes', NOW()),
 ('Produzir vídeos institucionais', 1, 4, 'Produzir e editar vídeos institucionais para a comunicação interna e externa', NOW());
-
-COMMIT;

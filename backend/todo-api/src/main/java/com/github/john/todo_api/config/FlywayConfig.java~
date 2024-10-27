@@ -1,0 +1,4 @@
+package com.github.john.todo_api.config;
+
+public class FlywayConfig {
+}

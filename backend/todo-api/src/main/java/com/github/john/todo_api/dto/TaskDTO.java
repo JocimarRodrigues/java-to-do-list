@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class TaskDTO {
 
     //private Integer id;
-
     private Long userId;
     private String name;
     private String description;

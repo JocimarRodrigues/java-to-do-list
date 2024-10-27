@@ -1,5 +1,6 @@
 package com.github.john.todo_api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.github.john.todo_api.enums.StatusTask;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
