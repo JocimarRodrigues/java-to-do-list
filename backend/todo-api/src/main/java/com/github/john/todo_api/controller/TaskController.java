@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.config.Task;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/tasks")
 public class TaskController {
@@ -25,6 +27,16 @@ public class TaskController {
         TaskDTO obj = service.findById(id);
         return ResponseEntity.ok().body(obj);
     }
+
+    @GetMapping
+    public List<Tasks> buscarTarefas(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "status", required = false) String status) {
+
+        return service.buscarTarefasComFiltro(name, description, status);
+    }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

@@ -16,7 +16,9 @@
       <NavbarComponent />
       <div class="flex w-full flex-nowrap max-w-[90vw]">
         <div class="bg-purple-400 min-w-[20vw] q-pa-md">
-          <ul class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif">
+          <ul
+            class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif"
+          >
             <li>Perfil</li>
             <li>Sair</li>
             <li></li>
@@ -43,7 +45,9 @@
                   :label="tab.label"
                 />
               </q-tabs>
-              <div>Adicionar Nova Tarefa</div>
+              <div>
+                <q-btn color="purple" label="Adicionar nova tarefa" />
+              </div>
             </div>
 
             <q-separator />
@@ -57,7 +61,6 @@
                   :rows="rows"
                   :columns="columns"
                   row-key="name"
-                  dark
                   color="amber"
                 >
                   <template v-slot:body="props">
@@ -88,7 +91,14 @@
                         :props="props"
                       >
                         <span>
-                          {{ props.row.status }}
+                          <q-chip
+                            class="glossy"
+                            :color="getColor(props.row.status)"
+                            text-color="white"
+                            size="sm"
+                          >
+                            {{ props.row.status }}
+                          </q-chip>
                         </span>
                         <q-tooltip>
                           {{ props.row.status }}
@@ -111,14 +121,33 @@
                         class="max-w-[200px] truncate"
                         :props="props"
                       >
-                        teste
+                        {{ props.row.updated_at }}
                       </q-td>
                       <q-td
                         key="dt_finalizacao"
                         class="max-w-[200px] truncate"
                         :props="props"
                       >
-                        acao
+                        <div>
+                          <q-btn
+                            v-if="props.row.status === 'PENDING'"
+                            flat
+                            dense
+                            color="positive"
+                            icon="done"
+                          >
+                            <q-tooltip> Confirmar </q-tooltip>
+                          </q-btn>
+                          <q-btn
+                            v-else
+                            flat
+                            dense
+                            color="negative"
+                            icon="cancel"
+                          >
+                            <q-tooltip> Cancelar </q-tooltip>
+                          </q-btn>
+                        </div>
                       </q-td>
                     </q-tr>
                   </template>
@@ -132,7 +161,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import * as UserService from 'src/services/UserService';
 import { useUserStore } from 'src/stores/user';
 import NavbarComponent from 'src/components/NavbarComponent.vue';
@@ -168,10 +197,28 @@ type Task = {
   user: string;
 };
 
+type OptionBtn = {
+  name: string;
+  label: string;
+  value: string;
+};
+
+const optionsBtn = <OptionBtn[]>[
+  {
+    name: 'confirm',
+    label: 'Confirmar',
+    value: 'confirm',
+  },
+  {
+    name: 'cancel',
+    label: 'Cancelar',
+    value: 'cancel',
+  },
+];
+
 defineOptions({
   name: 'TasksPage',
 });
-
 
 // const user = ref(useUserStore().userData);
 // const tasks = ref<Task[]>([]);
@@ -214,11 +261,9 @@ const columns: Column[] = [
   },
   {
     name: 'status',
-    align: 'left',
+    align: 'center',
     label: 'Status',
     field: (row: Row) => row.status,
-
-    sortable: true,
   },
   {
     name: 'created_at',
@@ -240,109 +285,6 @@ const columns: Column[] = [
   },
 ];
 
-// const rows = [
-//   {
-//     name: 'Frozen Yogurt',
-//     calories: 159,
-//     fat: 6.0,
-//     carbs: 24,
-//     protein: 4.0,
-//     sodium: 87,
-//     calcium: '14%',
-//     iron: '1%',
-//   },
-//   {
-//     name: 'Ice cream sandwich',
-//     calories: 237,
-//     fat: 9.0,
-//     carbs: 37,
-//     protein: 4.3,
-//     sodium: 129,
-//     calcium: '8%',
-//     iron: '1%',
-//   },
-//   {
-//     name: 'Eclair',
-//     calories: 262,
-//     fat: 16.0,
-//     carbs: 23,
-//     protein: 6.0,
-//     sodium: 337,
-//     calcium: '6%',
-//     iron: '7%',
-//   },
-//   {
-//     name: 'Cupcake',
-//     calories: 305,
-//     fat: 3.7,
-//     carbs: 67,
-//     protein: 4.3,
-//     sodium: 413,
-//     calcium: '3%',
-//     iron: '8%',
-//   },
-//   {
-//     name: 'Gingerbread',
-//     calories: 356,
-//     fat: 16.0,
-//     carbs: 49,
-//     protein: 3.9,
-//     sodium: 327,
-//     calcium: '7%',
-//     iron: '16%',
-//   },
-//   {
-//     name: 'Jelly bean',
-//     calories: 375,
-//     fat: 0.0,
-//     carbs: 94,
-//     protein: 0.0,
-//     sodium: 50,
-//     calcium: '0%',
-//     iron: '0%',
-//   },
-//   {
-//     name: 'Lollipop',
-//     calories: 392,
-//     fat: 0.2,
-//     carbs: 98,
-//     protein: 0,
-//     sodium: 38,
-//     calcium: '0%',
-//     iron: '2%',
-//   },
-//   {
-//     name: 'Honeycomb',
-//     calories: 408,
-//     fat: 3.2,
-//     carbs: 87,
-//     protein: 6.5,
-//     sodium: 562,
-//     calcium: '0%',
-//     iron: '45%',
-//   },
-//   {
-//     name: 'Donut',
-//     calories: 452,
-//     fat: 25.0,
-//     carbs: 51,
-//     protein: 4.9,
-//     sodium: 326,
-//     calcium: '2%',
-//     iron: '22%',
-//   },
-//   {
-//     name: 'KitKat',
-//     calories: 518,
-//     fat: 26.0,
-//     carbs: 65,
-//     protein: 7,
-//     sodium: 54,
-//     calcium: '12%',
-//     iron: '6%',
-//   },
-// ];
-
 const updateTasks = async () => {
   try {
     const { data } = await UserService.GetUserById(useUserStore().userData.id);
@@ -353,6 +295,13 @@ const updateTasks = async () => {
     console.log('🚀 ~ updateTasks ~ error:', error);
   }
 };
+
+const getColor = computed(() => {
+  return (status: string) => {
+    if (status == 'FINISH') return 'positive';
+    else return 'negative';
+  };
+});
 
 onMounted(async () => {
   await updateTasks();
