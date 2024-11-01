@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-center w-full h-[100vh]">
     <div class="bg-white">
-      <div
+      <!-- <div
         class="grid grid-cols-4 py-2 w-full flex-nowrap items-center bg-purple-800"
       >
         <span class="text-white text-center">To Do List</span>
@@ -12,10 +12,11 @@
           borderless
           color="black"
         />
-      </div>
-      <div class="flex w-full flex-nowrap max-w-[80vw]">
-        <div class="bg-purple-400 min-w-[20vw]">
-          <ul class="flex flex-col w-full text-center justify-center gap-4">
+      </div> -->
+      <NavbarComponent />
+      <div class="flex w-full flex-nowrap max-w-[90vw]">
+        <div class="bg-purple-400 min-w-[20vw] q-pa-md">
+          <ul class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif">
             <li>Perfil</li>
             <li>Sair</li>
             <li></li>
@@ -134,6 +135,7 @@
 import { onMounted, ref } from 'vue';
 import * as UserService from 'src/services/UserService';
 import { useUserStore } from 'src/stores/user';
+import NavbarComponent from 'src/components/NavbarComponent.vue';
 
 type Column = {
   name: string;
@@ -169,6 +171,7 @@ type Task = {
 defineOptions({
   name: 'TasksPage',
 });
+
 
 // const user = ref(useUserStore().userData);
 // const tasks = ref<Task[]>([]);
