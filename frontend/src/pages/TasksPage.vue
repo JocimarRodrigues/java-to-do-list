@@ -1,32 +1,29 @@
 <template>
-  <div class="flex items-center justify-center w-full h-[100vh]">
-    <div class="bg-white">
-      <!-- <div
-        class="grid grid-cols-4 py-2 w-full flex-nowrap items-center bg-purple-800"
-      >
-        <span class="text-white text-center">To Do List</span>
-        <q-input
-          class="bg-white pl-1 rounded col-span-2"
-          label="Search..."
-          dense
-          borderless
-          color="black"
-        />
-      </div> -->
+  <div
+    class="flex flex-col items-center justify-center w-full h-[100vh] rounded"
+  >
+    <div class="w-full lg:w-[90%]">
       <NavbarComponent />
-      <div class="flex w-full flex-nowrap max-w-[90vw]">
-        <div class="bg-purple-400 min-w-[20vw] q-pa-md">
-          <ul
-            class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif"
-          >
-            <li>Perfil</li>
-            <li>Sair</li>
-            <li></li>
-            <li></li>
-          </ul>
-        </div>
-        <div>
-          <q-card class="flex w-full">
+      <q-card class="min-w-full rounded">
+        <div class="flex w-full flex-nowrap max-w-[90vw] text-white font-light">
+          <div class="bg-[#9D4EDD] min-w-[20vw] q-pa-md">
+            <ul
+              class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif"
+            >
+              <li
+                class="cursor-pointer"
+                @click="() => (profilePage = !profilePage)"
+              >
+                Perfil
+              </li>
+              <li>
+                <span> Sair </span>
+              </li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="flex w-full" v-if="!profilePage">
             <div class="flex w-full justify-between q-pa-md">
               <q-tabs
                 v-model="tab"
@@ -37,6 +34,7 @@
                 indicator-color="primary"
                 align="justify"
                 narrow-indicator
+                mobile-arrows
               >
                 <q-tab
                   v-for="tab in tabs"
@@ -51,112 +49,107 @@
             </div>
 
             <q-separator />
-
-            <q-tab-panels v-model="tab" animated class="flex w-full">
+            <q-tab-panels v-model="tab" animated class="flex w-full h-[50vh]">
               <q-tab-panel v-for="tab in tabs" :key="tab.name" :name="tab.name">
-                <q-table
-                  flat
-                  bordered
-                  :title="`Tarefas ${tab.tableTitle}`"
-                  :rows="rows"
-                  :columns="columns"
-                  row-key="name"
-                  color="amber"
-                >
-                  <template v-slot:body="props">
-                    <q-tr :props="props">
-                      <q-td key="name" :props="props">
-                        <span>
-                          {{ props.row.name }}
-                        </span>
-                        <q-tooltip>
-                          {{ props.row.name }}
-                        </q-tooltip>
-                      </q-td>
-                      <q-td
-                        key="description"
-                        class="max-w-[200px] truncate"
-                        :props="props"
-                      >
-                        <span>
-                          {{ props.row.description }}
-                        </span>
-                        <q-tooltip>
-                          {{ props.row.description }}
-                        </q-tooltip>
-                      </q-td>
-                      <q-td
-                        key="status"
-                        class="max-w-[200px] truncate"
-                        :props="props"
-                      >
-                        <span>
-                          <q-chip
-                            class="glossy"
-                            :color="getColor(props.row.status)"
-                            text-color="white"
-                            size="sm"
-                          >
+                <q-scroll-area style="height: 100%; max-width: 100%">
+                  <q-table
+                    flat
+                    bordered
+                    :title="`Tarefas ${tab.tableTitle}`"
+                    :rows="rows"
+                    :columns="columns"
+                    row-key="name"
+                    color="amber"
+                  >
+                    <template v-slot:body="props">
+                      <q-tr :props="props">
+                        <q-td key="name" :props="props">
+                          <span>
+                            {{ props.row.name }}
+                          </span>
+                          <q-tooltip>
+                            {{ props.row.name }}
+                          </q-tooltip>
+                        </q-td>
+                        <q-td
+                          key="description"
+                          class="max-w-[200px] truncate"
+                          :props="props"
+                        >
+                          <span>
+                            {{ props.row.description }}
+                          </span>
+                          <q-tooltip>
+                            {{ props.row.description }}
+                          </q-tooltip>
+                        </q-td>
+                        <q-td
+                          key="status"
+                          class="max-w-[200px] truncate"
+                          :props="props"
+                        >
+                          <span>
+                            <q-chip
+                              class="glossy"
+                              :color="getColor(props.row.status)"
+                              text-color="white"
+                              size="sm"
+                            >
+                              {{ props.row.status }}
+                            </q-chip>
+                          </span>
+                          <q-tooltip>
                             {{ props.row.status }}
-                          </q-chip>
-                        </span>
-                        <q-tooltip>
-                          {{ props.row.status }}
-                        </q-tooltip>
-                      </q-td>
-                      <q-td
-                        key="created_at"
-                        class="max-w-[200px] truncate"
-                        :props="props"
-                      >
-                        <span>
-                          {{ props.row.created_at }}
-                        </span>
-                        <q-tooltip>
-                          {{ props.row.created_at }}
-                        </q-tooltip>
-                      </q-td>
-                      <q-td
-                        key="dt_finalizacao"
-                        class="max-w-[200px] truncate"
-                        :props="props"
-                      >
-                        {{ props.row.updated_at }}
-                      </q-td>
-                      <q-td
-                        key="dt_finalizacao"
-                        class="max-w-[200px] truncate"
-                        :props="props"
-                      >
-                        <div>
-                          <q-btn
-                            v-if="props.row.status === 'PENDING'"
-                            flat
-                            dense
-                            color="positive"
-                            icon="done"
-                          >
-                            <q-tooltip> Confirmar </q-tooltip>
-                          </q-btn>
-                          <q-btn
-                            v-else
-                            flat
-                            dense
-                            color="negative"
-                            icon="cancel"
-                          >
-                            <q-tooltip> Cancelar </q-tooltip>
-                          </q-btn>
-                        </div>
-                      </q-td>
-                    </q-tr>
-                  </template>
-                </q-table>
+                          </q-tooltip>
+                        </q-td>
+                        <q-td
+                          key="created_at"
+                          class="max-w-[200px] truncate"
+                          :props="props"
+                        >
+                          <span>
+                            {{ props.row.created_at }}
+                          </span>
+                          <q-tooltip>
+                            {{ props.row.created_at }}
+                          </q-tooltip>
+                        </q-td>
+                        <q-td
+                          key="actions"
+                          class="max-w-[200px] truncate"
+                          :props="props"
+                        >
+                          <div>
+                            <q-btn
+                              v-if="props.row.status === 'PENDING'"
+                              flat
+                              dense
+                              color="positive"
+                              icon="done"
+                            >
+                              <q-tooltip> Confirmar </q-tooltip>
+                            </q-btn>
+                            <q-btn
+                              v-else
+                              flat
+                              dense
+                              color="negative"
+                              icon="cancel"
+                            >
+                              <q-tooltip> Cancelar </q-tooltip>
+                            </q-btn>
+                          </div>
+                        </q-td>
+                      </q-tr>
+                    </template>
+                  </q-table>
+                </q-scroll-area>
               </q-tab-panel>
             </q-tab-panels>
-          </q-card>
+          </div>
+          <ProfileComponent v-else/>
         </div>
-      </div>
+      </q-card>
     </div>
   </div>
 </template>
@@ -165,6 +158,7 @@ import { computed, onMounted, ref } from 'vue';
 import * as UserService from 'src/services/UserService';
 import { useUserStore } from 'src/stores/user';
 import NavbarComponent from 'src/components/NavbarComponent.vue';
+import ProfileComponent from 'src/components/ProfileComponent.vue';
 
 type Column = {
   name: string;
@@ -241,6 +235,7 @@ const tabs = ref<Tab[]>([
   },
 ]);
 const rows = ref<Task[]>([]);
+const profilePage = ref(false);
 
 const columns: Column[] = [
   {
@@ -270,12 +265,6 @@ const columns: Column[] = [
     label: 'Data de Criação',
     align: 'left',
     field: (row: Row) => row.created_at,
-  },
-  {
-    name: 'dt_finalizacao',
-    label: 'Data de Finalização',
-    align: 'left',
-    field: 'protein',
   },
   {
     name: 'actions',
@@ -308,7 +297,17 @@ onMounted(async () => {
 });
 </script>
 <style lang="scss">
-body {
+/* body {
   background-color: black;
+} */
+
+.bg-primary {
+  color: #bf1162;
+}
+.bg-secondary {
+  color: #f244c4;
+}
+.bg-secondary {
+  color: #0d1026;
 }
 </style>

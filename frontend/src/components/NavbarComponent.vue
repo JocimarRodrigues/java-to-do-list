@@ -1,13 +1,13 @@
 <template>
-  <header class="row no-wrap shadow-1">
-    <q-toolbar class="bg-purple-800 glossy text-white max-w-[20vw]">
+  <header class="row no-wrap shadow-1 w-full">
+    <q-toolbar class="bg-[#000000] glossy text-white max-w-[20vw] rounded-tl">
       <q-avatar>
         <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
       </q-avatar>
 
-      <q-toolbar-title>To Do List Java/Vue</q-toolbar-title>
+      <q-toolbar-title class="text-lg">To Do List Java/Vue</q-toolbar-title>
       </q-toolbar>
-      <q-toolbar class="bg-purple-800 glossy p-0">
+      <q-toolbar class="bg-[#000000] glossy p-0 rounded-tr">
         <q-input
         class="bg-white pl-1 rounded w-[50%]"
         label="Digite um parâmetro para a busca..."
