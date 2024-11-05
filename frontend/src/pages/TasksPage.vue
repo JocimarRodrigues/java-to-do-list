@@ -51,7 +51,7 @@
             <q-separator />
             <q-tab-panels v-model="tab" animated class="flex w-full h-[50vh]">
               <q-tab-panel v-for="tab in tabs" :key="tab.name" :name="tab.name">
-                <q-scroll-area style="height: 100%; max-width: 100%">
+                <q-scroll-area style="height: 100%; max-width: 100%"   :thumbStyle="thumbStyle">
                   <q-table
                     flat
                     bordered
@@ -274,6 +274,22 @@ const columns: Column[] = [
   },
 ];
 
+const barStyle = {
+  right: '2px',
+  borderRadius: '9px',
+  backgroundColor: '#000000',
+  width: '9px',
+  opacity: 0.2
+}
+
+const   thumbStyle = {
+        // right: '4px',
+        borderRadius: '5px',
+        backgroundColor: '#9D4EDD',
+        width: '5px',
+        opacity: 0.75
+      }
+
 const updateTasks = async () => {
   try {
     const { data } = await UserService.GetUserById(useUserStore().userData.id);
@@ -310,4 +326,5 @@ onMounted(async () => {
 .bg-secondary {
   color: #0d1026;
 }
+
 </style>
