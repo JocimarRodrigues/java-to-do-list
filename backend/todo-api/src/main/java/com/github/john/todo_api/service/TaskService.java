@@ -1,8 +1,10 @@
 package com.github.john.todo_api.service;
 
 import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.dto.UserTasksDto;
 import com.github.john.todo_api.entity.Tasks;
 import com.github.john.todo_api.entity.Users;
+import com.github.john.todo_api.enums.StatusTask;
 import com.github.john.todo_api.exception.CustomGenericException;
 import com.github.john.todo_api.exception.NotFoundException;
 import com.github.john.todo_api.mapper.TaskMapper;
@@ -35,6 +37,28 @@ public class TaskService {
 
     public List<Tasks> buscarTarefasComFiltro(String name, String description, String status) {
         return repository.findAll(TaskSpecification.comFiltros(name, description, status));
+    }
+
+    public List<UserTasksDto> getUserTasks(Long id, StatusTask status) {
+        Users user = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
+        List <Tasks> tasks;
+        if (status != null) {
+            tasks = repository.findByUserAndStatus(user, status);
+        } else {
+            tasks = repository.findByUser(user);
+        }
+        return tasks.stream().map(UserTasksDto::new).toList();
+    }
+
+    public Users findByUser(String email, String name) {
+        Optional<Users> optional;
+        try {
+            optional = userRepository.findByEmailOrName(email, name);
+        } catch (RuntimeException e) {
+            throw new CustomGenericException(e.getMessage());
+        }
+        return optional.orElseThrow(() -> new NotFoundException("Usuário não encontrado"));
     }
 
     public TaskDTO insert(TaskDTO obj) {

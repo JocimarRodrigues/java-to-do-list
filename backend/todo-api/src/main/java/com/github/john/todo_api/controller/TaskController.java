@@ -1,8 +1,10 @@
 package com.github.john.todo_api.controller;
 
 import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.dto.UserTasksDto;
 import com.github.john.todo_api.entity.Tasks;
 import com.github.john.todo_api.entity.Users;
+import com.github.john.todo_api.enums.StatusTask;
 import com.github.john.todo_api.mapper.TaskMapper;
 import com.github.john.todo_api.service.TaskService;
 import com.github.john.todo_api.service.UserService;
@@ -28,13 +30,19 @@ public class TaskController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @GetMapping
-    public List<Tasks> buscarTarefas(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "description", required = false) String description,
-            @RequestParam(value = "status", required = false) String status) {
+//    @GetMapping
+//    public List<Tasks> buscarTarefas(
+//            @RequestParam(value = "name", required = false) String name,
+//            @RequestParam(value = "description", required = false) String description,
+//            @RequestParam(value = "status", required = false) String status) {
+//
+//        return service.buscarTarefasComFiltro(name, description, status);
+//    }
 
-        return service.buscarTarefasComFiltro(name, description, status);
+    @GetMapping()
+    public ResponseEntity<List<UserTasksDto>> getUserTasks(@RequestParam Long id, @RequestParam(value = "status", required = false) StatusTask status) {
+        List<UserTasksDto> tasks = service.getUserTasks(id, status);
+         return ResponseEntity.ok(tasks);
     }
 
 

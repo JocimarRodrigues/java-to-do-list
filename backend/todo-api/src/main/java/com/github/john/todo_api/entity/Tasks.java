@@ -29,6 +29,7 @@ public class Tasks {
     @NotEmpty(message = "Campo nome é obrigatório.")
     private String name;
     private String description;
+    @Enumerated(EnumType.STRING)
     private StatusTask status;
 
 

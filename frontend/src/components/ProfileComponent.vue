@@ -39,6 +39,10 @@ defineOptions({
 const isEdit = ref(false);
 const form = ref({});
 
+const onSubmit = () => {
+  console.log('🚀 ~ onSubmit ~ form:', form.value);
+};
+
 onMounted(() => {
   try {
     form.value = useUserStore().userData;

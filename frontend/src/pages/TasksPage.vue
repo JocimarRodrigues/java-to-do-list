@@ -108,10 +108,10 @@
                           :props="props"
                         >
                           <span>
-                            {{ props.row.created_at }}
+                            {{ props.row.createdAt }}
                           </span>
                           <q-tooltip>
-                            {{ props.row.created_at }}
+                            {{ props.row.createdAt }}
                           </q-tooltip>
                         </q-td>
                         <q-td
@@ -154,8 +154,9 @@
   </div>
 </template>
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue';
+import { computed, onMounted, ref, watch } from 'vue';
 import * as UserService from 'src/services/UserService';
+import * as TaskService from 'src/services/TaskService';
 import { useUserStore } from 'src/stores/user';
 import NavbarComponent from 'src/components/NavbarComponent.vue';
 import ProfileComponent from 'src/components/ProfileComponent.vue';
@@ -174,7 +175,7 @@ type Row = {
   name: string;
   description: string;
   status: number;
-  created_at: string;
+  createdAt: string;
   updated_at?: string;
 };
 
@@ -216,15 +217,15 @@ defineOptions({
 
 // const user = ref(useUserStore().userData);
 // const tasks = ref<Task[]>([]);
-const tab = ref('pendentes');
+const tab = ref('PENDING');
 const tabs = ref<Tab[]>([
   {
-    name: 'pendentes',
+    name: 'PENDING',
     label: 'Pendentes',
     tableTitle: 'Pendentes',
   },
   {
-    name: 'concluidas',
+    name: 'FINISH',
     label: 'Concluídas',
     tableTitle: 'Concluídas',
   },
@@ -264,7 +265,7 @@ const columns: Column[] = [
     name: 'created_at',
     label: 'Data de Criação',
     align: 'left',
-    field: (row: Row) => row.created_at,
+    field: (row: Row) => row.createdAt,
   },
   {
     name: 'actions',
@@ -292,14 +293,19 @@ const   thumbStyle = {
 
 const updateTasks = async () => {
   try {
-    const { data } = await UserService.GetUserById(useUserStore().userData.id);
-    rows.value = data.tasks;
+    // const { data } = await UserService.GetUserById(useUserStore().userData.id);
+    const {data} = await TaskService.GetUserTasks(useUserStore().userData.id, tab.value);
+    rows.value = data;
 
     console.log('🚀 ~ updateTasks ~ tasks.value:', rows.value);
   } catch (error) {
     console.log('🚀 ~ updateTasks ~ error:', error);
   }
 };
+
+watch(() => tab.value, async () => {
+  await updateTasks();
+})
 
 const getColor = computed(() => {
   return (status: string) => {
