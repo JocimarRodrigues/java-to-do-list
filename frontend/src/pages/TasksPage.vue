@@ -44,7 +44,7 @@
                 />
               </q-tabs>
               <div>
-                <q-btn color="purple" label="Adicionar nova tarefa" />
+                <q-btn color="purple" label="Adicionar nova tarefa" @click="openNewTaskDialog" />
               </div>
             </div>
 
@@ -160,6 +160,8 @@ import * as TaskService from 'src/services/TaskService';
 import { useUserStore } from 'src/stores/user';
 import NavbarComponent from 'src/components/NavbarComponent.vue';
 import ProfileComponent from 'src/components/ProfileComponent.vue';
+import { useQuasar } from 'quasar';
+import NewTaskDialogComponent from 'src/components/NewTaskDialogComponent.vue';
 
 type Column = {
   name: string;
@@ -275,6 +277,9 @@ const columns: Column[] = [
   },
 ];
 
+const $q = useQuasar();
+
+
 const barStyle = {
   right: '2px',
   borderRadius: '9px',
@@ -313,6 +318,27 @@ const getColor = computed(() => {
     else return 'negative';
   };
 });
+
+const openNewTaskDialog = () => {
+  $q.dialog({
+    component: NewTaskDialogComponent,
+  }).onOk(async ({task}) => {
+    try {
+      const {data} = await TaskService.CreateTask({
+        userId: useUserStore().userData.id,
+        name: task.name,
+        description: task.description,
+        status: 'PENDING',
+        created_at: new Date().toISOString()
+      });
+      console.log('🚀 ~ openNewTaskDialog ~ data:', data)
+    } catch (error) {
+      console.log('🚀 ~ openNewTaskDialog ~ error:', error)
+
+    }
+
+  })
+}
 
 onMounted(async () => {
   await updateTasks();

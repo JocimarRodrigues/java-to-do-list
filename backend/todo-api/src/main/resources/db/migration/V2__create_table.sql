@@ -12,7 +12,7 @@ CREATE TABLE tb_tasks (
     status VARCHAR(255),
     user_id INTEGER,
     description VARCHAR(255),
-    created_at DATE,
+    created_at TIMESTAMP,
     updated_at DATE,
     FOREIGN KEY (user_id) REFERENCES tb_users(id)
 );

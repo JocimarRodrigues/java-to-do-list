@@ -1,11 +1,11 @@
 -- Inserindo tarefas com status como string ('PENDING' ou 'FINISH')
 INSERT INTO tb_tasks (name, status, user_id, description, created_at) VALUES
-('Criar fluxo UML', 'PENDING', 1, 'Criar o fluxo uml da aplicação', NOW()),
-('Criar o BackEnd da Aplicação', 'PENDING', 1, 'Criar Backend, persistência e autenticação', NOW()),
-('Criar o FrontEnd da Aplicação', 'PENDING', 1, 'Criar Frontend da aplicação', NOW()),
-('Integrar FrontEnd com BackEnd', 'PENDING', 1, 'Integrar backend com frontend', NOW()),
-('Aplicar segurança a autentificação dos usuários', 'FINISH', 1, 'Aplicar segurança na autentificação dos usuários, usar spring security para tal, usar jwt', NOW()),
-('Subir aplicação para produção', 'FINISH', 1, 'Subir aplicação para ambiente de produção (Criar ambiente de produção e ambiente de desenvolvimento)', NOW());
+('Criar fluxo UML', 'PENDING', 1, 'Criar o fluxo uml da aplicação', CURRENT_TIMESTAMP),
+('Criar o BackEnd da Aplicação', 'PENDING', 1, 'Criar Backend, persistência e autenticação', CURRENT_TIMESTAMP),
+('Criar o FrontEnd da Aplicação', 'PENDING', 1, 'Criar Frontend da aplicação', CURRENT_TIMESTAMP),
+('Integrar FrontEnd com BackEnd', 'PENDING', 1, 'Integrar backend com frontend', CURRENT_TIMESTAMP),
+('Aplicar segurança a autentificação dos usuários', 'FINISH', 1, 'Aplicar segurança na autentificação dos usuários, usar spring security para tal, usar jwt', CURRENT_TIMESTAMP),
+('Subir aplicação para produção', 'FINISH', 1, 'Subir aplicação para ambiente de produção (Criar ambiente de produção e ambiente de desenvolvimento)', CURRENT_TIMESTAMP);
 
 INSERT INTO tb_tasks (name, status, user_id, description, created_at) VALUES
 ('Organizar evento corporativo', 'PENDING', 2, 'Planejar e organizar evento para lançamento de novo produto', NOW()),
