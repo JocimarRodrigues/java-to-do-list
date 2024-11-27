@@ -126,8 +126,9 @@
                               dense
                               color="positive"
                               icon="done"
+                              @click="finishTask(props.row.id)"
                             >
-                              <q-tooltip> Confirmar </q-tooltip>
+                              <q-tooltip> Concluir </q-tooltip>
                             </q-btn>
                             <q-btn
                               v-else
@@ -338,6 +339,27 @@ const openNewTaskDialog = () => {
     }
 
   })
+}
+
+const finishTask = (taskId : number) => {
+  $q.dialog({
+        title: 'Concluir Tarefa',
+        message: 'Você tem certeza que deseja concluir essa tarefa?',
+        cancel: true,
+        persistent: true
+      }).onOk(async () => {
+        try {
+          const {data} = await TaskService.FinishTask(taskId)
+          console.log('🚀 ~ finishTask ~ data:', data)
+        } catch (error) {
+          console.log('🚀 ~ finishTask ~ error:', error)
+        }
+        // console.log('>>>> OK')
+      }).onCancel(() => {
+        // console.log('>>>> Cancel')
+      }).onDismiss(() => {
+        // console.log('I am triggered on both OK and Cancel')
+      })
 }
 
 onMounted(async () => {

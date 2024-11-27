@@ -60,6 +60,13 @@ public class TaskController {
         return ResponseEntity.ok().body(obj);
     }
 
+    @PutMapping(value = "/finish/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public  ResponseEntity<String> finishTask(@PathVariable Integer id) {
+        String obj = service.finishTask(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> delete (@PathVariable Integer id) {

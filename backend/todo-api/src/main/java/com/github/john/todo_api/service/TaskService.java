@@ -86,6 +86,16 @@ public class TaskService {
         }
     }
 
+    public String finishTask(Integer id) {
+        Tasks entity = repository.findById(id).orElseThrow(() -> new NotFoundException("Tarefa nao encontrada"));
+        if(entity.getStatus().equals(StatusTask.FINISH)){
+            throw new CustomGenericException("Tarefa ja finalizada.");
+        }
+        entity.setStatus(StatusTask.FINISH);
+        repository.save(entity);
+        return "Tarefa finalizada com sucesso";
+    }
+
     public Tasks delete(Integer id) {
         Optional<Tasks> obj = repository.findById(id);
         return obj.orElseThrow(() -> new NotFoundException("Tarefa não encontrada"));

@@ -18,3 +18,10 @@ export function GetUserTasks(id: number, status: string) {
     },
   });
 }
+
+
+
+
+export function FinishTask(id: number) {
+  return instance.put(`${environment.baseUrl}tasks/finish/${id}`);
+}
