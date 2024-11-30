@@ -3,7 +3,7 @@
     class="flex flex-col items-center justify-center w-full h-[100vh] rounded"
   >
     <div class="w-full lg:w-[90%]">
-      <NavbarComponent />
+      <NavbarComponent @search="handleSearch" />
       <q-card>
         <div class="flex w-full flex-nowrap h-[70vh] max-w-[90vw] text-white font-light">
           <q-card class="bg-gradient-to-b from-gray-800 to-black h-full  min-w-[20vw] q-pa-md" square>
@@ -26,6 +26,7 @@
                 align="justify"
                 narrow-indicator
                 mobile-arrows
+                :loading="isLoading"
               >
                 <q-tab
                   v-for="tab in tabs"
@@ -233,6 +234,7 @@ const tabs = ref<Tab[]>([
 ]);
 const rows = ref<Task[]>([]);
 const profilePage = ref(false);
+const isLoading = ref(false);
 
 const columns: Column[] = [
   {
@@ -358,6 +360,18 @@ const changeStatusTask = (taskId : number, status: string) => {
 
 const logout = () => {
   console.log('sair')
+}
+
+const handleSearch = async (filter: string) => {
+  isLoading.value = true
+  try {
+    const {data} = await TaskService.FindTaskByFilters(useUserStore().userData.id, filter, tab.value )
+    rows.value = data
+  } catch (error) {
+    console.log('🚀 ~ handleSearch ~ error:', error)
+  } finally {
+    isLoading.value = false
+  }
 }
 
 onMounted(async () => {

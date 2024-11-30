@@ -1,5 +1,6 @@
 package com.github.john.todo_api.service;
 
+import com.github.john.todo_api.dto.TaskByFiltersDTO;
 import com.github.john.todo_api.dto.TaskDTO;
 import com.github.john.todo_api.dto.TaskUpdateDTO;
 import com.github.john.todo_api.dto.UserTasksDto;
@@ -50,6 +51,14 @@ public class TaskService {
             tasks = repository.findByUser(user);
         }
         return tasks.stream().map(UserTasksDto::new).toList();
+    }
+
+    public List<TaskByFiltersDTO> findTaskByFilters(Long userId, String filter, StatusTask status) {
+
+        List<Tasks> tasks = repository.findTaskByFilters(userId, filter, status);
+
+        return tasks.stream().map(TaskByFiltersDTO::new).toList();
+
     }
 
     public Users findByUser(String email, String name) {

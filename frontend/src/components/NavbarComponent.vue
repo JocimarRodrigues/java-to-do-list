@@ -14,7 +14,13 @@
         dense
         borderless
         color="black"
-      />
+        v-model="filter"
+        @update:model-value="() => $emit('search', filter)"
+      >
+    <template v-slot:append>
+      <q-btn  icon="search" color="blue" flat />
+    </template>
+    </q-input>
       </q-toolbar>
   </header>
 </template>
@@ -25,7 +31,9 @@ defineOptions({
   name: 'NavbarComponent',
 });
 
-const search = ref('');
+defineEmits(['search']);
+
+const filter = ref('');
 
 </script>
 <style lang="">

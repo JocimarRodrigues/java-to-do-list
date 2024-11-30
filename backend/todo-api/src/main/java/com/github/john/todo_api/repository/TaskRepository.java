@@ -16,6 +16,17 @@ public interface TaskRepository extends JpaRepository<Tasks, Integer>, JpaSpecif
     List<Tasks> findByUser(Users user);
 //    List<Tasks> findByUserAndStatus(Users user, StatusTask status);
 
+    @Query("SELECT t FROM Tasks t WHERE " +
+            "(:userId IS NULL OR t.user.id = :userId) AND " +
+            "(:status IS NULL OR t.status = :status) AND " +
+            "(" +
+            "LOWER(t.name) LIKE LOWER(CONCAT('%', :filter, '%')) OR " +
+            "LOWER(t.status) LIKE LOWER(CONCAT('%', :filter, '%'))" +
+            ")")
+    List<Tasks> findTaskByFilters(@Param("userId") Long userId,
+                                  @Param("filter") String filter,
+                                  @Param("status") StatusTask status);
+
     @Query("SELECT t FROM Tasks t WHERE t.user = :user AND t.status = :status ORDER BY t.createdAt DESC")
     List<Tasks> findByUserAndStatus(@Param("user") Users user, @Param("status") StatusTask status);
 }

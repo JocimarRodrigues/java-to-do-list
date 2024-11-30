@@ -19,6 +19,16 @@ export function GetUserTasks(id: number, status: string) {
   });
 }
 
+export function FindTaskByFilters(userId: number, filter: string, status: string) {
+  return instance.get(`${environment.baseUrl}tasks/search`, {
+    params: {
+      userId,
+      filter,
+      status,
+    },
+  });
+}
+
 
 
 

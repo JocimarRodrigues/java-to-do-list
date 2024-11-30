@@ -1,5 +1,6 @@
 package com.github.john.todo_api.controller;
 
+import com.github.john.todo_api.dto.TaskByFiltersDTO;
 import com.github.john.todo_api.dto.TaskDTO;
 import com.github.john.todo_api.dto.TaskUpdateDTO;
 import com.github.john.todo_api.dto.UserTasksDto;
@@ -28,6 +29,12 @@ public class TaskController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<TaskDTO> findById(@PathVariable Integer id) {
         TaskDTO obj = service.findById(id);
+        return ResponseEntity.ok().body(obj);
+    }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<TaskByFiltersDTO>> findTaskByFilters(@RequestParam Long userId, @RequestParam(value = "filter", required = false) String filter, @RequestParam(value = "status", required = false) StatusTask status) {
+        List<TaskByFiltersDTO> obj = service.findTaskByFilters(userId, filter, status);
         return ResponseEntity.ok().body(obj);
     }
 
