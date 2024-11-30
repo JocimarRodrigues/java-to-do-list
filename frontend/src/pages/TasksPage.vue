@@ -4,27 +4,18 @@
   >
     <div class="w-full lg:w-[90%]">
       <NavbarComponent />
-      <q-card class="min-w-full rounded">
-        <div class="flex w-full flex-nowrap max-w-[90vw] text-white font-light">
-          <div class="bg-[#9D4EDD] min-w-[20vw] q-pa-md">
+      <q-card>
+        <div class="flex w-full flex-nowrap h-[70vh] max-w-[90vw] text-white font-light">
+          <q-card class="bg-gradient-to-b from-gray-800 to-black h-full  min-w-[20vw] q-pa-md" square>
             <ul
               class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif"
             >
-              <li
-                class="cursor-pointer"
-                @click="() => (profilePage = !profilePage)"
-              >
-                Perfil
-              </li>
-              <li>
-                <span> Sair </span>
-              </li>
-              <li></li>
-              <li></li>
+            <q-btn name="perfil" label="Perfil" @click="() => (profilePage = !profilePage)" flat/>
+            <q-btn label="Sair" @click="logout" flat/>
             </ul>
-          </div>
+          </q-card>
           <div class="flex w-full" v-if="!profilePage">
-            <div class="flex w-full justify-between q-pa-md">
+            <div class="flex w-full justify-between q-pa-sm">
               <q-tabs
                 v-model="tab"
                 flat
@@ -49,9 +40,9 @@
             </div>
 
             <q-separator />
-            <q-tab-panels v-model="tab" animated class="flex w-full h-[50vh]">
-              <q-tab-panel v-for="tab in tabs" :key="tab.name" :name="tab.name">
-                <q-scroll-area style="height: 100%; max-width: 100%"   :thumbStyle="thumbStyle">
+            <q-tab-panels v-model="tab" animated class="flex w-full">
+              <q-tab-panel v-for="tab in tabs" :key="tab.name" :name="tab.name" class="h-full">
+                <q-scroll-area style="height: 400px; max-width: 100%"   :thumbStyle="thumbStyle">
                   <q-table
                     flat
                     bordered
@@ -60,7 +51,9 @@
                     :columns="columns"
                     row-key="name"
                     color="amber"
+
                   >
+
                     <template v-slot:body="props">
                       <q-tr :props="props">
                         <q-td key="name" :props="props">
@@ -280,21 +273,11 @@ const columns: Column[] = [
 
 const $q = useQuasar();
 
-
-const barStyle = {
-  right: '2px',
-  borderRadius: '9px',
-  backgroundColor: '#000000',
-  width: '9px',
-  opacity: 0.2
-}
-
 const   thumbStyle = {
-        // right: '4px',
         borderRadius: '5px',
         backgroundColor: '#9D4EDD',
         width: '5px',
-        opacity: 0.75
+        opacity: '0.75'
       }
 
 
@@ -311,7 +294,6 @@ const formatStatus = (status: string) => {
 
 const updateTasks = async () => {
   try {
-    // const { data } = await UserService.GetUserById(useUserStore().userData.id);
     const {data} = await TaskService.GetUserTasks(useUserStore().userData.id, tab.value);
     rows.value = data;
 
@@ -374,14 +356,19 @@ const changeStatusTask = (taskId : number, status: string) => {
       })
 }
 
+const logout = () => {
+  console.log('sair')
+}
+
 onMounted(async () => {
   await updateTasks();
 });
 </script>
 <style lang="scss">
-/* body {
-  background-color: black;
-} */
+ body {
+  background-image: url('../assets/images/rm222batch2-mind-03.jpg');
+  background-size: cover;
+}
 
 .bg-primary {
   color: #bf1162;
@@ -392,5 +379,7 @@ onMounted(async () => {
 .bg-secondary {
   color: #0d1026;
 }
+
+
 
 </style>

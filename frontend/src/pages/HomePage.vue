@@ -4,7 +4,7 @@
       <div
         class="row q-pa-md q-gutter-md justify-center items-center w-full h-[95dvh]"
       >
-        <div class="bg-white w-[60vw] h-[70vh] rounded-lg flex flex-nowrap">
+        <q-card class="bg-white w-[60vw] h-[70vh] rounded-lg flex flex-nowrap q-pa-sm">
           <div class="w-[50%] h-[98%] m-2">
             <q-img :src="`${bgImage}`" class="h-full rounded" />
           </div>
@@ -76,7 +76,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </q-card>
       </div>
     </q-page>
   </div>
@@ -141,7 +141,5 @@ const createUser = async () => {
 };
 </script>
 <style lang="scss">
-body {
-  background: black;
-}
+
 </style>

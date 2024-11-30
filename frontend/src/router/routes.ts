@@ -9,13 +9,13 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: '', component: () => import('pages/HomePage.vue') }],
+    children: [{ path: '', component: () => import('pages/HomePage.vue') }, { path: 'tasks', component: () => import('pages/TasksPage.vue') }],
   },
-  {
-    path: '/tasks',
-    name: 'TasksPage',
-    component: () => import('pages/TasksPage.vue'),
-  },
+  // {
+  //   path: '/tasks',
+  //   name: 'TasksPage',
+  //   component: () => import('pages/TasksPage.vue'),
+  // },
 
   // Always leave this as last one,
   // but you can also remove it

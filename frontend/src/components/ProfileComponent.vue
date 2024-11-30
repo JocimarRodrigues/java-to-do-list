@@ -1,6 +1,6 @@
 <template>
-  <div class="flex w-full text-black h-[60vh]">
-    <q-card class="w-full q-pa-md">
+  <div class="flex w-full h-full">
+    <q-card class="w-full q-pa-md" flat>
       <q-form class="flex flex-col gap-2">
         <q-input class="w-full" label="Nome" outlined readonly v-model="form.name" />
         <q-input class="w-full" label="Email" outlined readonly v-model="form.email" />

@@ -2,7 +2,7 @@
   <header class="row no-wrap shadow-1 w-full">
     <q-toolbar class="bg-[#000000] glossy text-white max-w-[20vw] rounded-tl">
       <q-avatar>
-        <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+        <img src="../assets/images/logo-dark.svg">
       </q-avatar>
 
       <q-toolbar-title class="text-lg">To Do List Java/Vue</q-toolbar-title>

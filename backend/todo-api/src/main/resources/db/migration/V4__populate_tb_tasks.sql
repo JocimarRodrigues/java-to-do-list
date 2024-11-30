@@ -5,7 +5,26 @@ INSERT INTO tb_tasks (name, status, user_id, description, created_at) VALUES
 ('Criar o FrontEnd da Aplicação', 'PENDING', 1, 'Criar Frontend da aplicação', CURRENT_TIMESTAMP),
 ('Integrar FrontEnd com BackEnd', 'PENDING', 1, 'Integrar backend com frontend', CURRENT_TIMESTAMP),
 ('Aplicar segurança a autentificação dos usuários', 'FINISH', 1, 'Aplicar segurança na autentificação dos usuários, usar spring security para tal, usar jwt', CURRENT_TIMESTAMP),
-('Subir aplicação para produção', 'FINISH', 1, 'Subir aplicação para ambiente de produção (Criar ambiente de produção e ambiente de desenvolvimento)', CURRENT_TIMESTAMP);
+('Subir aplicação para produção', 'FINISH', 1, 'Subir aplicação para ambiente de produção (Criar ambiente de produção e ambiente de desenvolvimento)', CURRENT_TIMESTAMP),
+('Criar documentação do projeto', 'PENDING', 1, 'Escrever documentação detalhada sobre as funcionalidades do sistema e seu uso', CURRENT_TIMESTAMP),
+('Realizar testes unitários', 'PENDING', 1, 'Desenvolver testes unitários para garantir a qualidade do código', CURRENT_TIMESTAMP),
+('Configurar CI/CD', 'PENDING', 1, 'Configurar pipeline de integração e entrega contínua para o projeto', CURRENT_TIMESTAMP),
+('Criar scripts de banco de dados', 'FINISH', 1, 'Desenvolver scripts SQL para criação e manutenção do banco de dados', CURRENT_TIMESTAMP),
+('Gerar relatórios automáticos', 'PENDING', 1, 'Implementar funcionalidade para gerar relatórios automáticos baseados nos dados do sistema', CURRENT_TIMESTAMP),
+('Configurar autenticação social', 'CANCELED', 1, 'Adicionar autenticação via Google e Facebook para usuários', CURRENT_TIMESTAMP),
+('Otimizar desempenho do sistema', 'FINISH', 1, 'Identificar e corrigir gargalos de desempenho no sistema', CURRENT_TIMESTAMP),
+('Criar ambiente de homologação', 'PENDING', 1, 'Configurar ambiente de homologação para testes pré-produção', CURRENT_TIMESTAMP),
+('Desenvolver funcionalidade de notificações', 'PENDING', 1, 'Adicionar notificações push para eventos importantes no sistema', CURRENT_TIMESTAMP),
+('Realizar revisão de código', 'FINISH', 1, 'Fazer revisão de código para garantir boas práticas e qualidade', CURRENT_TIMESTAMP),
+('Configurar monitoramento da aplicação', 'PENDING', 1, 'Configurar ferramentas de monitoramento, como Prometheus e Grafana', CURRENT_TIMESTAMP),
+('Criar integração com serviço de pagamentos', 'PENDING', 1, 'Implementar integração com um gateway de pagamentos', CURRENT_TIMESTAMP),
+('Melhorar usabilidade da interface', 'FINISH', 1, 'Ajustar design e fluxo da interface para melhor experiência do usuário', CURRENT_TIMESTAMP),
+('Implementar sistema de permissões', 'PENDING', 1, 'Criar sistema de controle de acesso baseado em roles', CURRENT_TIMESTAMP),
+('Atualizar dependências do projeto', 'CANCELED', 1, 'Atualizar todas as dependências para suas versões mais recentes', CURRENT_TIMESTAMP),
+('Criar mecanismo de busca interna', 'PENDING', 1, 'Implementar um mecanismo de busca eficiente para o sistema', CURRENT_TIMESTAMP),
+('Testar acessibilidade do sistema', 'FINISH', 1, 'Garantir que o sistema seja acessível para pessoas com deficiência', CURRENT_TIMESTAMP),
+('Realizar teste de carga', 'PENDING', 1, 'Executar testes de carga para avaliar desempenho em alta demanda', CURRENT_TIMESTAMP),
+('Implementar backup automático', 'PENDING', 1, 'Criar sistema de backup automático para os dados críticos', CURRENT_TIMESTAMP);
 
 INSERT INTO tb_tasks (name, status, user_id, description, created_at) VALUES
 ('Organizar evento corporativo', 'PENDING', 2, 'Planejar e organizar evento para lançamento de novo produto', NOW()),
