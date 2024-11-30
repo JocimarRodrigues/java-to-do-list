@@ -5,13 +5,23 @@
     <div class="w-full lg:w-[90%]">
       <NavbarComponent @search="handleSearch" />
       <q-card>
-        <div class="flex w-full flex-nowrap h-[70vh] max-w-[90vw] text-white font-light">
-          <q-card class="bg-gradient-to-b from-gray-800 to-black h-full  min-w-[20vw] q-pa-md" square>
+        <div
+          class="flex w-full flex-nowrap h-[70vh] max-w-[90vw] text-white font-light"
+        >
+          <q-card
+            class="bg-gradient-to-b from-gray-800 to-black h-full min-w-[20vw] q-pa-md"
+            square
+          >
             <ul
               class="flex flex-col w-full text-center justify-center gap-4 text-lg font-serif"
             >
-            <q-btn name="perfil" label="Perfil" @click="() => (profilePage = !profilePage)" flat/>
-            <q-btn label="Sair" @click="logout" flat/>
+              <q-btn
+                name="perfil"
+                label="Perfil"
+                @click="() => (profilePage = !profilePage)"
+                flat
+              />
+              <q-btn label="Sair" @click="logout" flat />
             </ul>
           </q-card>
           <div class="flex w-full" v-if="!profilePage">
@@ -36,14 +46,26 @@
                 />
               </q-tabs>
               <div>
-                <q-btn color="purple" label="Adicionar nova tarefa" @click="openNewTaskDialog" />
+                <q-btn
+                  color="purple"
+                  label="Adicionar nova tarefa"
+                  @click="openNewTaskDialog"
+                />
               </div>
             </div>
 
             <q-separator />
             <q-tab-panels v-model="tab" animated class="flex w-full">
-              <q-tab-panel v-for="tab in tabs" :key="tab.name" :name="tab.name" class="h-full">
-                <q-scroll-area style="height: 400px; max-width: 100%"   :thumbStyle="thumbStyle">
+              <q-tab-panel
+                v-for="tab in tabs"
+                :key="tab.name"
+                :name="tab.name"
+                class="h-full"
+              >
+                <q-scroll-area
+                  style="height: 400px; max-width: 100%"
+                  :thumbStyle="thumbStyle"
+                >
                   <q-table
                     flat
                     bordered
@@ -52,9 +74,7 @@
                     :columns="columns"
                     row-key="name"
                     color="amber"
-
                   >
-
                     <template v-slot:body="props">
                       <q-tr :props="props">
                         <q-td key="name" :props="props">
@@ -129,7 +149,9 @@
                               dense
                               color="negative"
                               icon="cancel"
-                              @click="changeStatusTask(props.row.id, 'CANCELED')"
+                              @click="
+                                changeStatusTask(props.row.id, 'CANCELED')
+                              "
                             >
                               <q-tooltip> Cancelar </q-tooltip>
                             </q-btn>
@@ -142,7 +164,7 @@
               </q-tab-panel>
             </q-tab-panels>
           </div>
-          <ProfileComponent v-else/>
+          <ProfileComponent v-else />
         </div>
       </q-card>
     </div>
@@ -157,6 +179,9 @@ import NavbarComponent from 'src/components/NavbarComponent.vue';
 import ProfileComponent from 'src/components/ProfileComponent.vue';
 import { useQuasar } from 'quasar';
 import NewTaskDialogComponent from 'src/components/NewTaskDialogComponent.vue';
+import { triggerNegative, triggerSuccess } from 'src/utils/triggers';
+import { AxiosError } from 'axios';
+import { handleAxiosError } from 'src/utils/handleAxiosError';
 
 type Column = {
   name: string;
@@ -275,13 +300,12 @@ const columns: Column[] = [
 
 const $q = useQuasar();
 
-const   thumbStyle = {
-        borderRadius: '5px',
-        backgroundColor: '#9D4EDD',
-        width: '5px',
-        opacity: '0.75'
-      }
-
+const thumbStyle = {
+  borderRadius: '5px',
+  backgroundColor: '#9D4EDD',
+  width: '5px',
+  opacity: '0.75',
+};
 
 const formatStatus = (status: string) => {
   switch (status) {
@@ -292,11 +316,14 @@ const formatStatus = (status: string) => {
     case 'CANCELED':
       return 'CANCELADA';
   }
-}
+};
 
 const updateTasks = async () => {
   try {
-    const {data} = await TaskService.GetUserTasks(useUserStore().userData.id, tab.value);
+    const { data } = await TaskService.GetUserTasks(
+      useUserStore().userData.id,
+      tab.value
+    );
     rows.value = data;
 
     console.log('🚀 ~ updateTasks ~ tasks.value:', rows.value);
@@ -305,9 +332,12 @@ const updateTasks = async () => {
   }
 };
 
-watch(() => tab.value, async () => {
-  await updateTasks();
-})
+watch(
+  () => tab.value,
+  async () => {
+    await updateTasks();
+  }
+);
 
 const getColor = computed(() => {
   return (status: string) => {
@@ -319,9 +349,9 @@ const getColor = computed(() => {
 const openNewTaskDialog = () => {
   $q.dialog({
     component: NewTaskDialogComponent,
-  }).onOk(async ({task}) => {
+  }).onOk(async ({ task }) => {
     try {
-      const {data} = await TaskService.CreateTask({
+      const { data } = await TaskService.CreateTask({
         userId: useUserStore().userData.id,
         name: task.name,
         description: task.description,
@@ -329,58 +359,69 @@ const openNewTaskDialog = () => {
         // created_at: new Date().toISOString()
       });
       updateTasks();
-      console.log('🚀 ~ openNewTaskDialog ~ data:', data)
+      console.log('🚀 ~ openNewTaskDialog ~ data:', data);
     } catch (error) {
-      console.log('🚀 ~ openNewTaskDialog ~ error:', error)
-
+      console.log('🚀 ~ openNewTaskDialog ~ error:', error);
     }
+  });
+};
 
-  })
-}
-
-const changeStatusTask = (taskId : number, status: string) => {
+const changeStatusTask = (taskId: number, status: string) => {
   $q.dialog({
-        title: `${status  == 'FINISH' ? 'Concluir' : 'Cancelar'} tarefa`,
-        message: `Você tem certeza que deseja ${status  == 'FINISH' ? 'concluir' : 'cancelar'} essa tarefa?`,
-        cancel: true,
-        persistent: true
-      }).onOk(async () => {
-        try {
-          const {data} = await TaskService.changeStatusTask(taskId, status)
-          console.log('🚀 ~ finishTask ~ data:', data)
-        } catch (error) {
-          console.log('🚀 ~ finishTask ~ error:', error)
+    title: `${status == 'FINISH' ? 'Concluir' : 'Cancelar'} tarefa`,
+    message: `Você tem certeza que deseja ${
+      status == 'FINISH' ? 'concluir' : 'cancelar'
+    } essa tarefa?`,
+    cancel: true,
+    persistent: true,
+  })
+    .onOk(async () => {
+      try {
+        const { data } = await TaskService.changeStatusTask(taskId, status);
+        triggerSuccess(data);
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          handleAxiosError(error);
+        } else {
+          triggerNegative('Erro');
         }
-        // console.log('>>>> OK')
-      }).onCancel(() => {
-        // console.log('>>>> Cancel')
-      }).onDismiss(() => {
-        // console.log('I am triggered on both OK and Cancel')
-      })
-}
+      }
+      // console.log('>>>> OK')
+    })
+    .onCancel(() => {
+      // console.log('>>>> Cancel')
+    })
+    .onDismiss(() => {
+      // console.log('I am triggered on both OK and Cancel')
+    });
+};
 
 const logout = () => {
-  console.log('sair')
-}
+  console.log('sair');
+};
 
 const handleSearch = async (filter: string) => {
-  isLoading.value = true
+  isLoading.value = true;
   try {
-    const {data} = await TaskService.FindTaskByFilters(useUserStore().userData.id, filter, tab.value )
-    rows.value = data
+    const { data } = await TaskService.FindTaskByFilters(
+      useUserStore().userData.id,
+      filter,
+      tab.value
+    );
+    rows.value = data;
   } catch (error) {
-    console.log('🚀 ~ handleSearch ~ error:', error)
+    console.log('🚀 ~ handleSearch ~ error:', error);
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
 
 onMounted(async () => {
   await updateTasks();
 });
 </script>
 <style lang="scss">
- body {
+body {
   background-image: url('../assets/images/rm222batch2-mind-03.jpg');
   background-size: cover;
 }
@@ -394,7 +435,4 @@ onMounted(async () => {
 .bg-secondary {
   color: #0d1026;
 }
-
-
-
 </style>
