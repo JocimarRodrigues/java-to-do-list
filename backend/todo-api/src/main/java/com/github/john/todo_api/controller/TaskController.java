@@ -1,6 +1,7 @@
 package com.github.john.todo_api.controller;
 
 import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.dto.TaskUpdateDTO;
 import com.github.john.todo_api.dto.UserTasksDto;
 import com.github.john.todo_api.entity.Tasks;
 import com.github.john.todo_api.entity.Users;
@@ -55,15 +56,15 @@ public class TaskController {
 
     @PutMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<Tasks> update(@PathVariable Integer id, @RequestBody Tasks obj ) {
+    public  ResponseEntity<Tasks> update(@PathVariable Integer id, @RequestBody Tasks obj) {
         obj = service.update(id, obj);
         return ResponseEntity.ok().body(obj);
     }
 
-    @PutMapping(value = "/finish/{id}")
+    @PutMapping(value = "/status")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<String> finishTask(@PathVariable Integer id) {
-        String obj = service.finishTask(id);
+    public  ResponseEntity<String> updateTaskStatus(@RequestBody TaskUpdateDTO task) {
+        String obj = service.updateTaskStatus(task);
         return ResponseEntity.ok().body(obj);
     }
 

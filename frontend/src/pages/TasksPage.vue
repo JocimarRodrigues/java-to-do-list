@@ -95,7 +95,7 @@
                               text-color="white"
                               size="sm"
                             >
-                              {{ props.row.status }}
+                              {{ formatStatus(props.row.status) }}
                             </q-chip>
                           </span>
                           <q-tooltip>
@@ -126,16 +126,16 @@
                               dense
                               color="positive"
                               icon="done"
-                              @click="finishTask(props.row.id)"
+                              @click="changeStatusTask(props.row.id, 'FINISH')"
                             >
                               <q-tooltip> Concluir </q-tooltip>
                             </q-btn>
                             <q-btn
-                              v-else
                               flat
                               dense
                               color="negative"
                               icon="cancel"
+                              @click="changeStatusTask(props.row.id, 'CANCELED')"
                             >
                               <q-tooltip> Cancelar </q-tooltip>
                             </q-btn>
@@ -233,7 +233,7 @@ const tabs = ref<Tab[]>([
     tableTitle: 'Concluídas',
   },
   {
-    name: 'canceladas',
+    name: 'CANCELED',
     label: 'Canceladas',
     tableTitle: 'Canceladas',
   },
@@ -297,6 +297,18 @@ const   thumbStyle = {
         opacity: 0.75
       }
 
+
+const formatStatus = (status: string) => {
+  switch (status) {
+    case 'PENDING':
+      return 'PENDENTE';
+    case 'FINISH':
+      return 'CONCLUIDA';
+    case 'CANCELED':
+      return 'CANCELADA';
+  }
+}
+
 const updateTasks = async () => {
   try {
     // const { data } = await UserService.GetUserById(useUserStore().userData.id);
@@ -341,15 +353,15 @@ const openNewTaskDialog = () => {
   })
 }
 
-const finishTask = (taskId : number) => {
+const changeStatusTask = (taskId : number, status: string) => {
   $q.dialog({
-        title: 'Concluir Tarefa',
-        message: 'Você tem certeza que deseja concluir essa tarefa?',
+        title: `${status  == 'FINISH' ? 'Concluir' : 'Cancelar'} tarefa`,
+        message: `Você tem certeza que deseja ${status  == 'FINISH' ? 'concluir' : 'cancelar'} essa tarefa?`,
         cancel: true,
         persistent: true
       }).onOk(async () => {
         try {
-          const {data} = await TaskService.FinishTask(taskId)
+          const {data} = await TaskService.changeStatusTask(taskId, status)
           console.log('🚀 ~ finishTask ~ data:', data)
         } catch (error) {
           console.log('🚀 ~ finishTask ~ error:', error)

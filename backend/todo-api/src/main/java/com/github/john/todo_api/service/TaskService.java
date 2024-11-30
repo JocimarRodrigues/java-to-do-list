@@ -1,6 +1,7 @@
 package com.github.john.todo_api.service;
 
 import com.github.john.todo_api.dto.TaskDTO;
+import com.github.john.todo_api.dto.TaskUpdateDTO;
 import com.github.john.todo_api.dto.UserTasksDto;
 import com.github.john.todo_api.entity.Tasks;
 import com.github.john.todo_api.entity.Users;
@@ -86,14 +87,15 @@ public class TaskService {
         }
     }
 
-    public String finishTask(Integer id) {
-        Tasks entity = repository.findById(id).orElseThrow(() -> new NotFoundException("Tarefa nao encontrada"));
-        if(entity.getStatus().equals(StatusTask.FINISH)){
-            throw new CustomGenericException("Tarefa ja finalizada.");
+    public String updateTaskStatus(TaskUpdateDTO obj) {
+        Tasks entity = repository.findById(obj.id()).orElseThrow(() -> new NotFoundException("Tarefa nao encontrada"));
+        if(entity.getStatus().equals(obj.status())){
+            throw new CustomGenericException("Tarefa já possuí esse status.");
         }
-        entity.setStatus(StatusTask.FINISH);
+        entity.setStatus(obj.status());
         repository.save(entity);
-        return "Tarefa finalizada com sucesso";
+        return String.format("Tarefa %s com sucesso", obj.status().getDescription().toLowerCase());
+
     }
 
     public Tasks delete(Integer id) {

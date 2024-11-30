@@ -22,6 +22,9 @@ export function GetUserTasks(id: number, status: string) {
 
 
 
-export function FinishTask(id: number) {
-  return instance.put(`${environment.baseUrl}tasks/finish/${id}`);
+export function changeStatusTask(id: number, status: string) {
+  return instance.put(`${environment.baseUrl}tasks/status`, {
+    id: id,
+    status: status,
+  });
 }
