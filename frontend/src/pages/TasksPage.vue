@@ -326,8 +326,9 @@ const openNewTaskDialog = () => {
         name: task.name,
         description: task.description,
         status: 'PENDING',
-        created_at: new Date().toISOString()
+        // created_at: new Date().toISOString()
       });
+      updateTasks();
       console.log('🚀 ~ openNewTaskDialog ~ data:', data)
     } catch (error) {
       console.log('🚀 ~ openNewTaskDialog ~ error:', error)

@@ -7,7 +7,7 @@ import com.github.john.todo_api.enums.StatusTask;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-public record UserTasksDto(Long id, String name, String description, StatusTask status, @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd") LocalDateTime createdAt) {
+public record UserTasksDto(Long id, String name, String description, StatusTask status, @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy") LocalDateTime createdAt) {
 
     public UserTasksDto(Tasks tasks) {
         this(tasks.getId(), tasks.getName(), tasks.getDescription(), tasks.getStatus(), tasks.getCreatedAt());
