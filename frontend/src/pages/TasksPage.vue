@@ -174,7 +174,6 @@
 </template>
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue';
-import * as UserService from 'src/services/UserService';
 import * as TaskService from 'src/services/TaskService';
 import { useUserStore } from 'src/stores/user';
 import NavbarComponent from 'src/components/NavbarComponent.vue';
@@ -217,31 +216,10 @@ type Task = {
   user: string;
 };
 
-type OptionBtn = {
-  name: string;
-  label: string;
-  value: string;
-};
-
-const optionsBtn = <OptionBtn[]>[
-  {
-    name: 'confirm',
-    label: 'Confirmar',
-    value: 'confirm',
-  },
-  {
-    name: 'cancel',
-    label: 'Cancelar',
-    value: 'cancel',
-  },
-];
-
 defineOptions({
   name: 'TasksPage',
 });
 
-// const user = ref(useUserStore().userData);
-// const tasks = ref<Task[]>([]);
 const tab = ref('PENDING');
 const tabs = ref<Tab[]>([
   {
@@ -329,8 +307,6 @@ const updateTasks = async () => {
       tab.value
     );
     rows.value = data;
-
-    console.log('🚀 ~ updateTasks ~ tasks.value:', rows.value);
   } catch (error) {
     console.log('🚀 ~ updateTasks ~ error:', error);
   }
@@ -366,12 +342,13 @@ const openNewTaskDialog = () => {
         name: task.name,
         description: task.description,
         status: 'PENDING',
-        // created_at: new Date().toISOString()
       });
       updateTasks();
-      console.log('🚀 ~ openNewTaskDialog ~ data:', data);
+      triggerSuccess(`Tarefa ${data.name} criada com sucesso.`);
     } catch (error) {
-      console.log('🚀 ~ openNewTaskDialog ~ error:', error);
+      error instanceof AxiosError
+        ? handleAxiosError(error)
+        : triggerNegative('Erro');
     }
   });
 };
@@ -384,30 +361,20 @@ const changeStatusTask = (taskId: number, status: string) => {
     } essa tarefa?`,
     cancel: true,
     persistent: true,
-  })
-    .onOk(async () => {
-      isLoading.value = true;
-      try {
-        const { data } = await TaskService.changeStatusTask(taskId, status);
-        triggerSuccess(data);
-        updateTasks();
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          handleAxiosError(error);
-        } else {
-          triggerNegative('Erro');
-        }
-      } finally {
-        isLoading.value = false;
-      }
-      // console.log('>>>> OK')
-    })
-    .onCancel(() => {
-      // console.log('>>>> Cancel')
-    })
-    .onDismiss(() => {
-      // console.log('I am triggered on both OK and Cancel')
-    });
+  }).onOk(async () => {
+    isLoading.value = true;
+    try {
+      const { data } = await TaskService.changeStatusTask(taskId, status);
+      triggerSuccess(data);
+      updateTasks();
+    } catch (error) {
+      error instanceof AxiosError
+        ? handleAxiosError(error)
+        : triggerNegative('Erro');
+    } finally {
+      isLoading.value = false;
+    }
+  });
 };
 
 const logout = () => {
@@ -424,7 +391,9 @@ const handleSearch = async (filter: string) => {
     );
     rows.value = data;
   } catch (error) {
-    console.log('🚀 ~ handleSearch ~ error:', error);
+    error instanceof AxiosError
+      ? handleAxiosError(error)
+      : triggerNegative('Erro');
   } finally {
     isLoading.value = false;
   }
