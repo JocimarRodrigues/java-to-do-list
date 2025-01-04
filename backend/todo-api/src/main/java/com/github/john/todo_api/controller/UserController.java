@@ -44,6 +44,8 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserDTO obj) {
@@ -53,10 +55,10 @@ public class UserController {
         return ResponseEntity.ok().body(user);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/profile")
     @ResponseStatus(HttpStatus.OK)
-    public  ResponseEntity<UserDTO> update(@PathVariable Long id, @RequestBody UserDTO obj ) {
-        UserDTO response = service.update(id, obj);
+    public  ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO obj) {
+        UserDTO response = service.updateProfile(obj);
         return ResponseEntity.ok().body(response);
     }
 

@@ -42,6 +42,19 @@ public class UserService {
 
     }
 
+//    public UserDTO changePassword(UserDTO obj) {
+//        Optional<Users> user = repository.findByEmailOrName(obj.getEmail(), obj.getName());
+//        Users foundUser = user.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+//
+//        if (!Objects.equals(obj.getPassword(), foundUser.getPassword())) {
+//            throw new CustomGenericException("Senha incorreta.");
+//        }
+//
+//        foundUser.setPassword(obj.getPassword());
+//        Users userSaved = repository.save(foundUser);
+//        return UserMapper.toDTO(userSaved);
+//    }
+
     public UserDTO insert(UserDTO obj) {
         try {
             Users user = UserMapper.toEntity(obj);
@@ -52,14 +65,19 @@ public class UserService {
         }
     }
 
-    public UserDTO update(Long id, UserDTO obj) {
+    public UserDTO updateProfile(UserDTO obj) {
         try {
-            Users entity = repository.getReferenceById(id);
-            updateData(entity, obj);
-            Users user = repository.save(entity);
-            return UserMapper.toDTO(user);
-        } catch (EntityNotFoundException e) {
-            throw new NotFoundException("Usuário não encontrado.");
+            Optional<Users> user = repository.findByEmailOrName(obj.getEmail(), obj.getName()).or(() -> repository.findById(obj.getId()));
+            Users foundUser = user.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
+            if (!Objects.equals(obj.getPassword(), foundUser.getPassword())) {
+                throw new CustomGenericException("Senha incorreta.");
+            }
+
+            updateData(foundUser, obj);
+            Users userSaved = repository.save(foundUser);
+            return UserMapper.toDTO(userSaved);
+        } catch (RuntimeException e) {
+            throw new CustomGenericException(e.getMessage());
         }
     }
 
@@ -69,11 +87,10 @@ public class UserService {
         repository.delete(user);
     }
 
-    public void updateData(Users entity, UserDTO obj) {
-        entity.setName(obj.getName());
-        entity.setPassword(obj.getPassword());
-        entity.setEmail(obj.getEmail());
-
+    public void updateData(Users foundUser, UserDTO obj) {
+        foundUser.setName(obj.getName());
+        foundUser.setPassword(obj.getNewPassword() != null ? obj.getNewPassword() : foundUser.getPassword());
+        foundUser.setEmail(obj.getEmail());
     }
 
 }

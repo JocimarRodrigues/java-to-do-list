@@ -19,6 +19,10 @@ export function CreateUser(user: User) {
   return instance.post(`${environment.baseUrl}users`, user);
 }
 
+export function UpdateUser(user: User) {
+  return instance.put(`${environment.baseUrl}users/profile`, user);
+}
+
 // export function CadastroUser(data: Register) {
 //   return instance.post(`${environment.baseUrl}/api/v1/usuarios/signUp`, data);
 // }

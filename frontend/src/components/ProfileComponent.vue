@@ -1,13 +1,35 @@
 <template>
   <div class="flex w-full h-full">
     <q-card class="w-full q-pa-md" flat>
-      <q-form class="flex flex-col gap-2">
-        <q-input class="w-full" label="Nome" outlined readonly v-model="form.name" />
-        <q-input class="w-full" label="Email" outlined readonly v-model="form.email" />
+      <q-form
+        class="flex flex-col gap-2"
+        v-if="form?.id"
+        @submit.prevent="onSubmit"
+      >
+        <q-input
+          class="w-full"
+          label="Nome"
+          outlined
+          :readonly="!isEdit"
+          v-model="form.name"
+          hint=""
+        />
+        <q-input
+          class="w-full"
+          label="Email"
+          outlined
+          :readonly="!isEdit"
+          v-model="form.email"
+          hint=""
+        />
         <div class="flex flex-col gap-2" v-if="isEdit">
-          <q-input class="w-full" label="Senha Atual" outlined readonly v-model="form.password"/>
-          <q-input class="w-full" label="Nova Senha" outlined readonly v-model="form.newPassword"/>
-          <q-input class="w-full" label="Confirmar Senha" outlined readonly v-model="form.confirmPassword"/>
+          <PasswordInput v-model="form.password" label="Senha Atual" />
+          <PasswordInput v-model="form.newPassword" label="Nova Senha" />
+          <PasswordInput
+            v-model="form.confirmPassword"
+            label="Confirmar Senha"
+            :rules="[(val: string) => form?.newPassword === val || 'Senhas não conferem!', (val: string) => !!val || 'Campo obrigatório!']"
+          />
         </div>
         <q-card-actions align="right">
           <div v-if="!isEdit">
@@ -29,18 +51,42 @@
     </q-card>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import { useUserStore } from 'src/stores/user';
 import { onMounted, ref } from 'vue';
+import { triggerSuccess } from 'src/utils/triggers';
+import PasswordInput from './PasswordInput.vue';
+import * as UserService from 'src/services/UserService';
+import { AxiosError } from 'axios';
+import { handleAxiosError } from 'src/utils/handleAxiosError';
+
+type Form = {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  newPassword?: string;
+  confirmPassword?: string;
+};
 
 defineOptions({
   name: 'ProfileComponent',
 });
 const isEdit = ref(false);
-const form = ref({});
+const form = ref<Form>();
 
-const onSubmit = () => {
-  console.log('🚀 ~ onSubmit ~ form:', form.value);
+const onSubmit = async () => {
+  try {
+    if (form.value) {
+      const { data } = await UserService.UpdateUser(form.value);
+      useUserStore().storageUserSave(data);
+      triggerSuccess('Perfil atualizado com sucesso');
+    }
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      handleAxiosError(error);
+    }
+  }
 };
 
 onMounted(() => {

@@ -115,7 +115,7 @@
                             </q-chip>
                           </span>
                           <q-tooltip>
-                            {{ props.row.status }}
+                            {{ formatStatus(props.row.status) }}
                           </q-tooltip>
                         </q-td>
                         <q-td
@@ -345,8 +345,14 @@ watch(
 
 const getColor = computed(() => {
   return (status: string) => {
-    if (status == 'FINISH') return 'positive';
-    else return 'negative';
+    switch (status) {
+      case 'PENDING':
+        return 'warning';
+      case 'FINISH':
+        return 'positive';
+      case 'CANCELED':
+        return 'negative';
+    }
   };
 });
 
