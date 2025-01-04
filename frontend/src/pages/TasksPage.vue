@@ -71,7 +71,9 @@
                     bordered
                     :title="`Tarefas ${tab.tableTitle}`"
                     :rows="rows"
+                    rows-per-page-label="Tarefas por página:"
                     :columns="columns"
+                    :loading="isLoading"
                     row-key="name"
                     color="amber"
                   >
@@ -191,6 +193,7 @@ type Column = {
   align?: 'left' | 'center' | 'right';
   sortable?: boolean;
   sort?: (a: string, b: string, rowA?: string, rowB?: string) => number;
+  show?: boolean;
 };
 
 type Row = {
@@ -295,6 +298,7 @@ const columns: Column[] = [
     label: 'Ações',
     align: 'center',
     field: 'sodium',
+    show: tab.value !== 'CANCELED', // Controle direto aqui
   },
 ];
 
@@ -376,15 +380,19 @@ const changeStatusTask = (taskId: number, status: string) => {
     persistent: true,
   })
     .onOk(async () => {
+      isLoading.value = true;
       try {
         const { data } = await TaskService.changeStatusTask(taskId, status);
         triggerSuccess(data);
+        updateTasks();
       } catch (error) {
         if (error instanceof AxiosError) {
           handleAxiosError(error);
         } else {
           triggerNegative('Erro');
         }
+      } finally {
+        isLoading.value = false;
       }
       // console.log('>>>> OK')
     })
