@@ -310,7 +310,9 @@ const updateTasks = async () => {
     );
     rows.value = data;
   } catch (error) {
-    console.log('🚀 ~ updateTasks ~ error:', error);
+    error instanceof AxiosError
+      ? handleAxiosError(error)
+      : triggerNegative('Erro');
   }
 };
 

@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import { useUserStore } from 'src/stores/user';
 import { onMounted, ref } from 'vue';
-import { triggerSuccess } from 'src/utils/triggers';
+import { triggerNegative, triggerSuccess } from 'src/utils/triggers';
 import PasswordInput from './PasswordInput.vue';
 import * as UserService from 'src/services/UserService';
 import { AxiosError } from 'axios';
@@ -93,7 +93,9 @@ onMounted(() => {
   try {
     form.value = useUserStore().userData;
   } catch (error) {
-    console.log('🚀 ~ onMounted ~ error:', error);
+    error instanceof AxiosError
+      ? handleAxiosError(error)
+      : triggerNegative('Erro');
   }
 });
 </script>
