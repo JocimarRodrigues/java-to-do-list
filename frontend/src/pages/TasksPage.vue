@@ -1,15 +1,15 @@
 <template>
   <div
-    class="flex flex-col items-center justify-center w-full h-[100vh] rounded"
+    class="flex flex-col items-center justify-center md:w-full h-[100vh] rounded"
   >
-    <div class="w-full lg:w-[90%]">
+    <div class="md:w-full lg:w-[90%]">
       <NavbarComponent @search="handleSearch" />
-      <q-card>
+      <q-card class="flex w-[90vw]">
         <div
-          class="flex w-full flex-nowrap h-[70vh] max-w-[90vw] text-white font-light"
+          class="flex w-full max-w-[100%] md:w-full flex-nowrap h-[70vh] md:max-w-[90vw] text-white font-light"
         >
           <q-card
-            class="bg-gradient-to-b from-gray-800 to-black h-full min-w-[20vw] q-pa-md"
+            class="bg-gradient-to-b from-gray-800 to-black h-full min-w-[30vw] md:min-w-[20vw] q-pa-md"
             square
           >
             <ul
@@ -24,13 +24,13 @@
               <q-btn label="Sair" @click="logout" flat />
             </ul>
           </q-card>
-          <div class="flex w-full" v-if="!profilePage">
+          <div class="flex w-[65%] md:w-full" v-if="!profilePage">
             <div class="flex w-full justify-between q-pa-sm">
               <q-tabs
                 v-model="tab"
                 flat
                 dense
-                class="text-grey"
+                class="text-grey max-w-[100%]"
                 active-color="primary"
                 indicator-color="primary"
                 align="justify"
@@ -47,6 +47,7 @@
               </q-tabs>
               <div>
                 <q-btn
+                  class="flex q-my-sm"
                   color="purple"
                   label="Adicionar nova tarefa"
                   @click="openNewTaskDialog"

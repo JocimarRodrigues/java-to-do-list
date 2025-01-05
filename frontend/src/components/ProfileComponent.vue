@@ -1,8 +1,8 @@
 <template>
   <div class="flex w-full h-full">
-    <q-card class="w-full q-pa-md" flat>
+    <q-card class="flex min-w-full q-pa-md" flat>
       <q-form
-        class="flex flex-col gap-2"
+        class="flex flex-col gap-2 w-full"
         v-if="form?.id"
         @submit.prevent="onSubmit"
       >
