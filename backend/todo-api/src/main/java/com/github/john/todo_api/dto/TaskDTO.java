@@ -24,6 +24,6 @@ public class TaskDTO {
     private StatusTask status;
     @JsonProperty("created_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
-    private LocalDateTime createdAt;  // Altere para createdAt
+    private LocalDateTime createdAt;
 
 }

@@ -42,18 +42,6 @@ public class UserService {
 
     }
 
-//    public UserDTO changePassword(UserDTO obj) {
-//        Optional<Users> user = repository.findByEmailOrName(obj.getEmail(), obj.getName());
-//        Users foundUser = user.orElseThrow(() -> new NotFoundException("Usuário não encontrado."));
-//
-//        if (!Objects.equals(obj.getPassword(), foundUser.getPassword())) {
-//            throw new CustomGenericException("Senha incorreta.");
-//        }
-//
-//        foundUser.setPassword(obj.getPassword());
-//        Users userSaved = repository.save(foundUser);
-//        return UserMapper.toDTO(userSaved);
-//    }
 
     public UserDTO insert(UserDTO obj) {
         try {

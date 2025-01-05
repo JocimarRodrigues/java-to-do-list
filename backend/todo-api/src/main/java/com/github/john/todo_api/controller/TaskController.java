@@ -38,14 +38,6 @@ public class TaskController {
         return ResponseEntity.ok().body(obj);
     }
 
-//    @GetMapping
-//    public List<Tasks> buscarTarefas(
-//            @RequestParam(value = "name", required = false) String name,
-//            @RequestParam(value = "description", required = false) String description,
-//            @RequestParam(value = "status", required = false) String status) {
-//
-//        return service.buscarTarefasComFiltro(name, description, status);
-//    }
 
     @GetMapping()
     public ResponseEntity<List<UserTasksDto>> getUserTasks(@RequestParam Long id, @RequestParam(value = "status", required = false) StatusTask status) {

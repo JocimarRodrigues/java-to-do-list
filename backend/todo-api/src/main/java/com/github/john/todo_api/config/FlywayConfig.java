@@ -11,8 +11,8 @@ public class FlywayConfig {
     @Bean
     CommandLineRunner cleanMigrateDatabase(Flyway flyway) {
         return args -> {
-            flyway.clean();     // Limpa o banco de dados
-            flyway.migrate();   // Reaplica todas as migrations
+            flyway.clean();
+            flyway.migrate();
         };
     }
 }

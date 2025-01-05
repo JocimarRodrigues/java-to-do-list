@@ -50,8 +50,6 @@ public class UserController {
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<UserDTO> insert(@RequestBody @Valid UserDTO obj) {
         UserDTO user = service.insert(obj);
-//        obj = service.insert(obj);
-//        UserDTO userDto = new UserDTO(obj);
         return ResponseEntity.ok().body(user);
     }
 
