@@ -183,6 +183,7 @@ import NewTaskDialogComponent from 'src/components/NewTaskDialogComponent.vue';
 import { triggerNegative, triggerSuccess } from 'src/utils/triggers';
 import { AxiosError } from 'axios';
 import { handleAxiosError } from 'src/utils/handleAxiosError';
+import { useRouter } from 'vue-router';
 
 type Column = {
   name: string;
@@ -221,6 +222,7 @@ defineOptions({
 });
 
 const tab = ref('PENDING');
+const router = useRouter();
 const tabs = ref<Tab[]>([
   {
     name: 'PENDING',
@@ -378,7 +380,8 @@ const changeStatusTask = (taskId: number, status: string) => {
 };
 
 const logout = () => {
-  console.log('sair');
+  useUserStore().storageUserRemove();
+  router.push('/');
 };
 
 const handleSearch = async (filter: string) => {
