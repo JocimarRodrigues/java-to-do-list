@@ -1,6 +1,7 @@
 package com.github.john.todo_api.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Users {
     @NotEmpty(message = "Campo nome é obrigatório.")
     private String name;
     @NotEmpty
+    @Email
     private String email;
     @NotEmpty(message = "Campo senha é obrigatório.")
     private String password;

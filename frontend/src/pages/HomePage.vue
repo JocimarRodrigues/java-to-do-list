@@ -4,13 +4,16 @@
       <div
         class="row q-pa-md q-gutter-md justify-center items-center w-full h-[95dvh]"
       >
-        <q-card class="bg-white w-[60vw] h-[70vh] rounded-lg flex flex-nowrap q-pa-sm">
+        <q-card
+          class="bg-white w-[60vw] h-[70vh] rounded-lg flex flex-nowrap q-pa-sm"
+        >
           <div class="w-[50%] h-[98%] m-2">
             <q-img :src="`${bgImage}`" class="h-full rounded" />
           </div>
           <div class="flex flex-col w-[50%] flex-nowrap">
-            <div
+            <q-form
               class="flex flex-col items-center justify-center h-full flex-nowrap q-pa-md"
+              @submit.prevent="onSubmit"
             >
               <h1 class="text-3xl mt-4">
                 {{ isCreate ? 'Criar Conta' : 'Login' }}
@@ -27,10 +30,12 @@
                 <q-input
                   class="my-4"
                   label="Email"
+                  type="email"
                   placeholder="Digite seu email..."
                   outlined
                   dense
                   v-model="user.email"
+                  :rules="[(val: string) => !!val || 'Campo obrigatório!']"
                 />
                 <q-input
                   label="Senha"
@@ -56,7 +61,7 @@
                   color="black"
                   no-caps
                   class="font-medium"
-                  @click="login"
+                  type="submit"
                 />
                 <q-btn
                   v-else
@@ -64,7 +69,7 @@
                   color="black"
                   no-caps
                   class="font-medium"
-                  @click="createUser"
+                  type="submit"
                 />
                 <p
                   class="text-center w-full text-blue-400 cursor-pointer"
@@ -74,7 +79,7 @@
                   Não tem uma conta? Clique aqui para se cadastar.
                 </p>
               </div>
-            </div>
+            </q-form>
           </div>
         </q-card>
       </div>
@@ -89,12 +94,8 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { AxiosError } from 'axios';
 import { useUserStore } from 'src/stores/user';
-
-// interface User {
-//   name: string;
-//   email: string;
-//   password: string;
-// }
+import { triggerNegative, triggerSuccess } from 'src/utils/triggers';
+import { handleAxiosError } from 'src/utils/handleAxiosError';
 
 defineOptions({
   name: 'HomePage',
@@ -105,41 +106,37 @@ const user = ref<User>({
   email: '',
   password: '',
 });
-const userFound = ref<User>({
-  name: '',
-  email: '',
-  password: '',
-});
+
 const isCreate = ref<boolean>(false);
 const errors = ref<[]>([]);
 const userStore = useUserStore();
 const router = useRouter();
+
+const onSubmit = async () => {
+  isCreate.value ? createUser() : login();
+};
 
 const login = async () => {
   try {
     const { data } = await UserService.Login(user.value);
     userStore.storageUserSave(data);
     if (data) router.push('/tasks');
-    console.log('🚀 ~ login ~ userFound:', data);
-  } catch (error: AxiosError | unknown) {
-    if (error instanceof AxiosError && error.response) {
-      errors.value = error.response.data.errors;
-      console.log('🚀 ~ login ~ error:', error.response.data.errors);
-    } else {
-      console.error('Ocorreu um erro inesperado', error);
-    }
+  } catch (error) {
+    error instanceof AxiosError
+      ? handleAxiosError(error)
+      : triggerNegative('Erro');
   }
 };
 
 const createUser = async () => {
   try {
     const { data } = await UserService.CreateUser(user.value);
-    console.log('🚀 ~ createUser ~ data:', data);
+    triggerSuccess(`Usuário ${data.name} criado com sucesso.`);
   } catch (error) {
-    console.log('🚀 ~ createUser ~ error:', error);
+    error instanceof AxiosError
+      ? handleAxiosError(error)
+      : triggerNegative('Erro');
   }
 };
 </script>
-<style lang="scss">
-
-</style>
+<style lang="scss"></style>
